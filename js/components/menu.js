@@ -17,7 +17,6 @@ export default class Menu extends React.PureComponent {
     componentWillReceiveProps(nextProps) {
         if (nextProps.channelId !== this.props.channelId) {
             const expandedPath = this.getExpandedPathById(nextProps.channelId);
-            console.log(expandedPath);
             this.setState({ expandedPath });
         }
     }
@@ -65,16 +64,17 @@ export default class Menu extends React.PureComponent {
         return parentId ? `${parentId}\\${id}` : id;
     }
 
-    renderItem(id, title, type, isCurrent) {
+    renderItem(id, title, type, isExpanded, children) {
         return (
             <li
                 key={id}
                 data-id={id}
                 data-type={type}
                 onClick={this.handleMenuItemClick}
-                className={isCurrent ? `${type} current` : type}
+                className={isExpanded ? `${type} expanded` : type}
             >
                 {title}
+                {children ? children : null}
             </li>
         )
     }
@@ -90,21 +90,13 @@ export default class Menu extends React.PureComponent {
             } else {
                 const className = expandedPath[id] ? "expanded" : "";
                 const idForAll = this.concatParentIdAndId(id, "All");
-                result.push((
-                    <li
-                        key={id}
-                        data-id={id}
-                        data-type="folder"
-                        onClick={this.handleMenuItemClick} className={`folder ${className}`}
-                    >
-                        {genre.title}
-
-                        <ul className={`submenu ${className}`}>
-                            {this.renderItem(idForAll, `All ${genre.title}`, "channel", this.props.channelId === idForAll)}
-                            {this.renderGenresBranch(genre.children, id)}
-                        </ul>
-                    </li>
-                ))
+                const children = (
+                    <ul className={`submenu ${className}`}>
+                        {this.renderItem(idForAll, `All ${genre.title}`, "channel", this.props.channelId === idForAll)}
+                        {this.renderGenresBranch(genre.children, id)}
+                    </ul>
+                );
+                result.push(this.renderItem(id, genre.title, "folder", expandedPath[id], children));
             }
         }
         return result;
