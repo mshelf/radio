@@ -1,0 +1,37 @@
+@import "variables";
+
+$toggle-button-size: 32px;
+
+.app-top-bar {
+  background-color: $dark-bg-color;
+  position: fixed;
+  width: 100%;
+  height: $top-bar-height;
+  z-index: 100;
+
+  .app-menu-toggle-button {
+    display: none;
+  }
+}
+
+@media (max-width: $max-width-without-menu) {
+  .app-top-bar {
+    .app-menu-toggle-button {
+      display: block;
+      box-sizing: border-box;
+      cursor: pointer;
+      padding: $content-padding;
+      width: $top-bar-height + 1;
+      height: $top-bar-height;
+
+      svg {
+        display: inline-block;
+        color: rgb(255, 255, 255);
+        fill: rgb(255, 255, 255);
+        height: $toggle-button-size;
+        width: $toggle-button-size;
+        user-select: none;
+      }
+    }
+  }
+}

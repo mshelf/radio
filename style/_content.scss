@@ -1,0 +1,14 @@
+@import "variables";
+
+.app-content {
+  margin-left: $menu-width;
+  margin-top: $top-bar-height;
+  padding: $content-padding;
+  float: left;
+}
+
+@media (max-width: $max-width-without-menu) {
+  .app-content {
+    margin-left: 0;
+  }
+}

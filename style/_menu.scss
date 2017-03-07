@@ -1,0 +1,86 @@
+@import "variables";
+
+.app-menu {
+  background-color: $dark-bg-color;
+  color: #fff;
+  box-sizing: border-box;
+  position: fixed;
+  width: $menu-width;
+  height: calc(100% - #{$top-bar-height});
+  top: $top-bar-height;
+  font-size: 16px;
+  overflow: auto;
+  user-select: none;
+
+  ul {
+    margin: 0;
+    padding-left: 13px;
+    padding-top: 10px;
+    list-style: none;
+
+    &.root {
+      padding-left: 0;
+      padding-top: 0;
+      > li {
+        padding-left: 20px;
+      }
+    }
+
+    li {
+      padding: 10px 0 10px 0;
+      cursor: pointer;
+
+      &:not(.expanded):hover {
+        background-color: #35383d;
+      }
+
+      &:before {
+        content: "";
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        margin: 0 7px;
+        box-sizing: border-box;
+      }
+
+      &.folder {
+        &:before {
+          background: url("../img/folders.svg") -16px 0;
+        }
+
+        &.expanded {
+          &:before {
+            background-position: -32px 0;
+          }
+        }
+      }
+
+      &.channel {
+        &.current {
+          color: #c33;
+        }
+
+        &:before {
+          background: url("../img/headphones.svg");
+        }
+      }
+    }
+
+    &.submenu {
+      display: none;
+      &.expanded {
+        display: block;
+      }
+    }
+  }
+}
+
+@media (max-width: $max-width-without-menu) {
+  .app-menu {
+    display: none;
+
+    &.force-show {
+      display: block;
+    }
+  }
+}
