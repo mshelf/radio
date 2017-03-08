@@ -13,7 +13,7 @@ export default class ChannelContent extends React.PureComponent {
         }
         return (
             <div className="app-content">
-                <h1>{this.getChannelNameById(channelId)}</h1>
+                <h1 className="app-content-header">{this.getChannelNameById(channelId)}</h1>
             </div>
         )
     }

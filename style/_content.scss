@@ -10,5 +10,19 @@
 @media (max-width: $max-width-without-menu) {
   .app-content {
     margin-left: 0;
+    width: calc(100% - #{$content-padding*2});
+
+    .app-content-header {
+      font-size: 28px;
+    }
+  }
+}
+
+@media (max-width: $smaller-width) {
+  .app-content {
+    .app-content-header {
+      text-align: center;
+      font-size: 24px;
+    }
   }
 }
