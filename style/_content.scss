@@ -1,7 +1,7 @@
 @import "variables";
 
 .app-content {
-  margin-left: $menu-width;
+  margin-left: $menu-width + 10px;
   margin-top: $top-bar-height;
   padding: $content-padding;
   float: left;

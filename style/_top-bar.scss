@@ -1,9 +1,10 @@
 @import "variables";
 
 $toggle-button-size: 32px;
+$logo-size: 40px;
 
 .app-top-bar {
-  background-color: $dark-bg-color;
+  background-color: #000;
   position: fixed;
   width: 100%;
   height: $top-bar-height;
@@ -12,10 +13,31 @@ $toggle-button-size: 32px;
   .app-menu-toggle-button {
     display: none;
   }
+
+  .app-header {
+    margin-top: ($top-bar-height - $logo-size) / 2;
+    margin-left: 20px;
+
+    .app-logo {
+      width: $logo-size;
+      height: $logo-size;
+      background-image: url("../img/logo.svg");
+      float: left;
+      margin-right: 10px;
+    }
+
+    .app-header-text {
+      color: $red-bg-color;
+      font-size: 24px;
+      padding-top: ($logo-size - 24px) / 2;
+    }
+  }
 }
 
 @media (max-width: $max-width-without-menu) {
   .app-top-bar {
+    text-align: center;
+
     .app-menu-toggle-button {
       display: block;
       box-sizing: border-box;
@@ -23,15 +45,22 @@ $toggle-button-size: 32px;
       padding: $content-padding;
       width: $top-bar-height + 1;
       height: $top-bar-height;
+      float: left;
 
       svg {
         display: inline-block;
-        color: rgb(255, 255, 255);
-        fill: rgb(255, 255, 255);
+        color: $red-bg-color;
+        fill: $red-bg-color;
         height: $toggle-button-size;
         width: $toggle-button-size;
         user-select: none;
       }
+    }
+
+    .app-header {
+      display: inline-block;
+      width: 250px;
+      margin-left: -$toggle-button-size;
     }
   }
 }
