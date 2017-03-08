@@ -47,6 +47,7 @@ class RadioApp extends React.Component {
     handleSelectChannel(channelId) {
         if (this.props.params.channelId !== channelId) {
             this.context.router.push(channelId);
+            this.setState({ isMenuForceShow: false })
         }
     }
 

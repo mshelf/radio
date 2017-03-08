@@ -1,4 +1,4 @@
-import React from "react";
+import React, { PropTypes } from "react";
 
 export default class TopBar extends React.Component {
     render() {
@@ -17,3 +17,7 @@ export default class TopBar extends React.Component {
         )
     }
 }
+
+TopBar.propTypes = {
+    onToggleMenu: PropTypes.func,
+};
