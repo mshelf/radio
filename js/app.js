@@ -8,6 +8,8 @@ import TopBar from "./components/top-bar";
 import ChannelContent from "./components/channel-content";
 
 import genres from "./data/genres";
+import ChannelsRegistry from "./services/channels-registry";
+
 
 window.initApp = function () {
     if (document.readyState !== "loading") {
@@ -36,6 +38,9 @@ class RadioApp extends React.Component {
         this.state = {
             isMenuForceShow: false,
         };
+
+        this.channelsRegistry = new ChannelsRegistry(genres);
+        console.log(this.channelsRegistry);
     }
 
     handleToggleMenu(e) {
@@ -47,7 +52,7 @@ class RadioApp extends React.Component {
     handleSelectChannel(channelId) {
         if (this.props.params.channelId !== channelId) {
             this.context.router.push(channelId);
-            this.setState({ isMenuForceShow: false })
+            this.setState({ isMenuForceShow: false });
         }
     }
 
@@ -66,6 +71,7 @@ class RadioApp extends React.Component {
                 />
                 <ChannelContent
                     channelId={channelId}
+                    channelsRegistry={this.channelsRegistry}
                 />
             </div>
         )
@@ -74,4 +80,4 @@ class RadioApp extends React.Component {
 
 RadioApp.contextTypes = {
     router: React.PropTypes.object.isRequired,
-}
+};
