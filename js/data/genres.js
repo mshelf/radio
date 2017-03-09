@@ -1,27 +1,48 @@
 export default [
     {
         title: "Pop",
+        keywords: [
+            { query: ["pop music", "поп музыка"], yearPostfix: 1990 },
+            "европа плюс",
+            "русское радио"
+        ]
     },
     {
         title: "Rock",
         children: [
             {
                 title: "Hard Rock",
+                keywords: { epochPostfix: 1970 },
             },
             {
                 title: "Punk Rock",
+                keywords: { epochPostfix: 1970 },
             },
             {
                 title: "Post Rock",
+                keywords: {
+                    query: ["post rock", "shoegaze music", "post punk"],
+                    yearPostfix: 2000
+                },
             },
             {
-                title: "Alternative Rock"
+                title: "Alternative Rock",
+                keywords: {
+                    epochPostfix: 1990,
+                    yearPostfix: 2000,
+                }
             },
             {
                 title: "Progressive Rock",
+                keywords: { epochPostfix: 1970 },
             },
             {
                 title: "Russian Rock",
+                keywords: {
+                    query: ["Russian rock", "Русский рок"],
+                    epochPostfix: 1980,
+                    yearPostfix: 2000,
+                }
             }
         ].sort(comparator),
     },
@@ -30,43 +51,59 @@ export default [
         children: [
             {
                 title: "Heavy Metal",
+                keywords: { epochPostfix: 1980 },
             },
             {
                 title: "Power Metal",
+                keywords: { epochPostfix: 2000 },
             },
             {
                 title: "Thrash Metal",
+                keywords: { epochPostfix: 1980 },
             },
             {
                 title: "Black Metal",
+                keywords: {
+                    epochPostfix: 1980,
+                    yearPostfix: 2000,
+                },
             },
             {
                 title: "Death Metal",
                 children: [
                     {
-                        title: "Melodic Death"
+                        title: "Melodic Death",
+                        keywords: {
+                            query: "Melodic death metal",
+                            yearPostfix: 2000,
+                        }
                     }
                 ].sort(comparator)
             },
             {
                 title: "Metalcore",
+                keywords: { yearPostfix: 2000 },
             },
             {
                 title: "Nu Metal",
+                keywords: {
+                    yearPostfix: 2000,
+                    epochPostfix: 1990,
+                },
             },
             {
                 title: "Post Metal",
+                keywords: {
+                    query: ["post metal", "post black metal"],
+                    yearPostfix: 2005
+                }
             },
             {
                 title: "Folk Metal",
-                children: [
-                    {
-                        title: "Pagan Metal",
-                    },
-                    {
-                        title: "Viking Metal",
-                    }
-                ].sort(comparator)
+                keywords: {
+                    query: ["folk metal", "pagan metal", "viking metal"],
+                    yearPostfix: 2005,
+                }
             },
         ].sort(comparator),
     },
@@ -75,15 +112,18 @@ export default [
         children: [
             {
                 title: "Ambient",
+                keywords: { yearPostfix: 2015 }
             },
             {
                 title: "House",
                 children: [
                     {
                         title: "Deep House",
+                        keywords: { yearPostfix: 2010 }
                     },
                     {
                         title: "Electro House",
+                        keywords: { yearPostfix: 2010 }
                     },
                 ].sort(comparator)
             },
@@ -92,15 +132,22 @@ export default [
                 children: [
                     {
                         title: "Progressive Trance",
+                        keywords: { yearPostfix: 2005 }
                     },
                     {
                         title: "Uplifting Trance",
+                        keywords: { yearPostfix: 2005 }
                     },
                     {
                         title: "Vocal Trance",
+                        keywords: { yearPostfix: 2005 }
                     },
                     {
                         title: "Goa-Psy Trance",
+                        keywords: {
+                            yearPostfix: 2000,
+                            epochPostfix: 1990,
+                        }
                     },
                 ].sort(comparator)
             },
@@ -109,28 +156,61 @@ export default [
                 children: [
                     {
                         title: "Hardcore",
+                        keywords: {
+                            query: ["Electronic hardcore", "electronic hardstyle"],
+                            keywords: {
+                                yearPostfix: 2000,
+                                epochPostfix: 1990,
+                            }
+                        }
                     },
                     {
                         title: "Gabber",
+                        keywords: { yearPostfix: 2010 }
                     },
                 ].sort(comparator)
             },
             {
-                title: "Chillout & Lounge",
+                title: "Light & Relax",
+                children: [
+                    {
+                        title: "Lounge",
+                        keywords: { yearPostfix: 2010 }
+                    },
+                    {
+                        title: "Chillout",
+                        keywords: { yearPostfix: 2010 }
+                    },
+                    {
+                        title: "Trip-Hop",
+                        keywords: { yearPostfix: 2010 }
+                    },
+                ].sort(comparator)
             },
             {
                 title: "Drum & Bass",
+                keywords: {
+                    query: ["Drum & Bass", "liquid drum and bass"],
+                    yearPostfix: 2005,
+                }
             },
             {
                 title: "Techno",
+                keywords: {
+                    query: ["Techno", "Detroit techno"],
+                    yearPostfix: 2005,
+                    epochPostfix: 1990,
+                }
             }
         ].sort(comparator)
     },
     {
         title: "Hip-Hop & Rap",
+        keywords: { yearPostfix: 2000, epochPostfix: 1990 },
         children: [
             {
                 title: "Russian Rap",
+                keywords: { yearPostfix: 2005, epochPostfix: 1990 },
             }
         ].sort(comparator)
     },
@@ -156,6 +236,7 @@ export default [
     },
     {
         title: "Blues",
+        keywords: { epochPostfix: 1920 },
     },
     {
         title: "Ska",
