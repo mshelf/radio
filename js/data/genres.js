@@ -112,7 +112,10 @@ export default [
         children: [
             {
                 title: "Ambient",
-                keywords: { yearPostfix: 2015 }
+                keywords: {
+                    query: "ambient music -chillout",
+                    yearPostfix: 2015
+                }
             },
             {
                 title: "House",
