@@ -3,8 +3,8 @@ export default [
         title: "Pop",
         keywords: [
             { query: ["pop music", "поп музыка"], yearPostfix: 1990 },
-            "европа плюс",
-            "русское радио"
+            "европа плюс музыка",
+            "русское радио музыка"
         ]
     },
     {
@@ -39,7 +39,7 @@ export default [
             {
                 title: "Russian Rock",
                 keywords: {
-                    query: ["Russian rock", "Русский рок"],
+                    query: ["Русский рок клипы"],
                     epochPostfix: 1980,
                     yearPostfix: 2000,
                 }
@@ -249,9 +249,11 @@ export default [
         children: [
             {
                 title: "Guitar",
+                keywords: "instrumental guitar music",
             },
             {
                 title: "Piano",
+                keywords: "instrumental piano music",
             },
         ].sort(comparator)
     }
