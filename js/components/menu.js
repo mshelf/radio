@@ -89,10 +89,9 @@ export default class Menu extends React.PureComponent {
                 result.push(this.renderItem(id, genre.title, "channel", id === this.props.channelId))
             } else {
                 const className = expandedPath[id] ? "expanded" : "";
-                const idForAll = this.concatParentIdAndId(id, "All");
                 const children = (
                     <ul className={`submenu ${className}`}>
-                        {this.renderItem(idForAll, `All ${genre.title}`, "channel", this.props.channelId === idForAll)}
+                        {this.renderItem(id, `All ${genre.title}`, "channel", this.props.channelId === id)}
                         {this.renderGenresBranch(genre.children, id)}
                     </ul>
                 );

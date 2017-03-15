@@ -1,10 +1,9 @@
 import React, { PropTypes } from "react";
-import YoutubeApiClient from "../services/youtube-api-client";
+import loadTracks from "../services/tracks-loader";
 
 export default class ChannelContent extends React.PureComponent {
     constructor() {
         super();
-        this.apiClient = new YoutubeApiClient();
         this.state = {};
     }
 
@@ -26,15 +25,8 @@ export default class ChannelContent extends React.PureComponent {
             return;
         }
 
-        const query = this.props.channelsRegistry.getChannelDescriptor(channelId).query;
-        this.apiClient.search(query).then(searchResult => {
-            if (searchResult.items.length > 0) {
-                const num = Math.floor(Math.random() * searchResult.items.length);
-                const videoId = searchResult.items[num].id.videoId;
-                this.setState({ url: `https://youtube.com/watch?v=${videoId}` });
-            } else {
-                this.setState({ url: null });
-            }
+        loadTracks(this.props.channelsRegistry, channelId).then(track => {
+            this.setState({ url: track });
         });
     }
 
