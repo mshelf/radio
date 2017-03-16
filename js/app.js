@@ -9,6 +9,8 @@ import ChannelContent from "./components/channel-content";
 
 import genres from "./data/genres";
 import ChannelsRegistry from "./services/channels-registry";
+import TracksLoader from "./services/tracks-loader";
+import PlayingQueue from "./services/playing-queue";
 
 
 window.initApp = function () {
@@ -39,8 +41,9 @@ class RadioApp extends React.Component {
             isMenuForceShow: false,
         };
 
-        this.channelsRegistry = new ChannelsRegistry(genres);
-        console.log(this.channelsRegistry);
+        const channelsRegistry = new ChannelsRegistry(genres);
+        const trackLoader = new TracksLoader(channelsRegistry);
+        this.playingQueue = new PlayingQueue(trackLoader);
     }
 
     handleToggleMenu(e) {
@@ -71,7 +74,7 @@ class RadioApp extends React.Component {
                 />
                 <ChannelContent
                     channelId={channelId}
-                    channelsRegistry={this.channelsRegistry}
+                    playingQueue={this.playingQueue}
                 />
             </div>
         )

@@ -1,10 +1,19 @@
 import React, { PropTypes } from "react";
-import loadTracks from "../services/tracks-loader";
+import YouTube from "react-youtube";
+
+const YOUTUBE_PLAYER_OPTS = {
+    height: "390",
+    width: "640",
+    playerVars: {
+        autoplay: 1
+    }
+};
 
 export default class ChannelContent extends React.PureComponent {
     constructor() {
         super();
         this.state = {};
+        this.handleNextClick = this.handleNextClick.bind(this);
     }
 
     componentDidMount() {
@@ -21,31 +30,56 @@ export default class ChannelContent extends React.PureComponent {
 
     setChannel(channelId) {
         if (!channelId) {
-            this.setState({ url: null });
+            this.setState({ videoId: null });
             return;
         }
 
-        loadTracks(this.props.channelsRegistry, channelId).then(track => {
-            this.setState({ url: track });
+        const playingQueue = this.props.playingQueue;
+        this.props.playingQueue.setOnChangeHandler(() => {
+            this.setState({ videoId: playingQueue.getNextTrack() });
         });
+
+        playingQueue.loadTracks(channelId);
+    }
+
+    handleNextClick() {
+        this.props.playingQueue.loadTracks(this.props.channelId);
     }
 
     getChannelNameById(channelId) {
         return channelId.replace(/\\/g, " / ");
     }
 
+    renderPlayer() {
+        const videoId = this.state.videoId;
+        if (!videoId) {
+            return null;
+        }
+        return (
+            <div>
+                <p>
+                    <YouTube
+                        opts={YOUTUBE_PLAYER_OPTS}
+                        videoId={videoId}
+                        onEnd={this.handleNextClick}
+                    />
+                </p>
+                <p>
+                    <button onClick={this.handleNextClick}>Next</button>
+                </p>
+            </div>
+        )
+    }
+
     render() {
         const channelId = this.props.channelId;
-        const url = this.state.url;
         if (!channelId) {
             return null;
         }
         return (
             <div className="app-content">
                 <h1 className="app-content-header">{this.getChannelNameById(channelId)}</h1>
-                {
-                    url ? <p><a href={url} target="_blank">{url}</a></p> : null
-                }
+                {this.renderPlayer()}
             </div>
         )
     }
@@ -53,5 +87,5 @@ export default class ChannelContent extends React.PureComponent {
 
 ChannelContent.propTypes = {
     channelId: PropTypes.string,
-    channelsRegistry: PropTypes.object,
+    playingQueue: PropTypes.object,
 };

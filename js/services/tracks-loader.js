@@ -1,15 +1,21 @@
 import { youtubeApiSearch, youtubeApiPlaylist } from "./youtube-api-client";
 
-export default function loadTracks (channelsRegistry, channelId) {
-    let channel = channelsRegistry.getChannelDescriptor(channelId);
-    if (channel.childrenIds && (randomInt(2) % 2 == 0)) {
-        channel = channelsRegistry.getChannelDescriptor(randomArrayItem(channel.childrenIds));
+export default class TracksLoader {
+    constructor(channelsRegistry) {
+        this.channelsRegistry = channelsRegistry;
     }
 
-    const query = makeSearchQueryByKeywords(channel);
-    return youtubeApiSearch(query).then(
-        resultSet => getRandomTrackFromResultSet(resultSet, item => item.id)
-    );
+    loadTracks(channelId) {
+        let channel = this.channelsRegistry.getChannelDescriptor(channelId);
+        if (channel.childrenIds && (randomInt(2) % 2 == 0)) {
+            channel = this.channelsRegistry.getChannelDescriptor(randomArrayItem(channel.childrenIds));
+        }
+
+        const query = makeSearchQueryByKeywords(channel);
+        return youtubeApiSearch(query).then(
+            resultSet => getRandomTrackFromResultSet(resultSet, item => item.id)
+        );
+    }
 }
 
 function makeSearchQueryByKeywords(channel) {
@@ -63,7 +69,7 @@ function getRandomTrackFromResultSet(resultSet, getIdFromItem) {
         const num = Math.floor(Math.random() * resultSet.items.length);
         const id = getIdFromItem(resultSet.items[num]);
         if (id.kind === "youtube#video") {
-            return `https://youtube.com/watch?v=${id.videoId}`;
+            return id.videoId;
         } else {
             return youtubeApiPlaylist(id.playlistId).then(
                 resultSetInner => getRandomTrackFromResultSet(resultSetInner, item => item.snippet.resourceId)

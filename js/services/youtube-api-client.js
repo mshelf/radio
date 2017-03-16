@@ -9,6 +9,6 @@ export function youtubeApiSearch(query) {
 }
 
 export function youtubeApiPlaylist(playlistId) {
-    const url = `${URL_BASE}/playlistItems?part=snippet&key=${API_KEY}&maxResults=50&playlistId=${playlistId}`;
+    const url = `${URL_BASE}/playlistItems?part=snippet&key=${API_KEY}&maxResults=30&playlistId=${playlistId}&fields=items(snippet/resourceId)`;
     return axios.get(url).then(r => r.data);
 }
