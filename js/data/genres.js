@@ -12,7 +12,10 @@ export default [
         children: [
             {
                 title: "Hard Rock",
-                keywords: { epochPostfix: 1970 },
+                keywords: {
+                    query: ["Hard rock music", "Glam rock music"],
+                    epochPostfix: 1970
+                },
             },
             {
                 title: "Punk Rock",
@@ -39,7 +42,7 @@ export default [
             {
                 title: "Russian Rock",
                 keywords: {
-                    query: ["Русский рок клипы"],
+                    query: ["Русский рок музыка", "Русский рок клипы"],
                     epochPostfix: 1980,
                     yearPostfix: 2000,
                 }
@@ -51,7 +54,7 @@ export default [
         children: [
             {
                 title: "Heavy Metal",
-                keywords: { epochPostfix: 1980 },
+                keywords: ["New Wave of British Heavy Metal", "Heavy Metal", "hard and heavy"],
             },
             {
                 title: "Power Metal",
