@@ -5,6 +5,20 @@
   margin-top: $top-bar-height;
   padding: $content-padding;
   float: left;
+  width: calc(100% - #{$menu-width} - 10px - #{$content-padding*2});
+  max-width: 768px;
+
+  .app-youtube-player {
+    width: calc(100% - 10px);
+  }
+
+  .app-player-buttons {
+    margin-top: 10px;
+    button {
+      padding: 15px;
+      font-size: 16px;
+    }
+  }
 }
 
 @media (max-width: $max-width-without-menu) {
@@ -14,6 +28,10 @@
 
     .app-content-header {
       font-size: 28px;
+    }
+
+    .app-youtube-player {
+      width: 100%;
     }
   }
 }

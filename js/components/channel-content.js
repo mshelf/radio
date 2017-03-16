@@ -2,8 +2,8 @@ import React, { PropTypes } from "react";
 import YouTube from "react-youtube";
 
 const YOUTUBE_PLAYER_OPTS = {
-    height: "390",
-    width: "640",
+    // height: "390",
+    // width: "640",
     playerVars: {
         autoplay: 1
     }
@@ -57,16 +57,17 @@ export default class ChannelContent extends React.PureComponent {
         }
         return (
             <div>
-                <p>
+                <div className="app-player-container">
                     <YouTube
                         opts={YOUTUBE_PLAYER_OPTS}
+                        className="app-youtube-player"
                         videoId={videoId}
                         onEnd={this.handleNextClick}
                     />
-                </p>
-                <p>
-                    <button onClick={this.handleNextClick}>Next</button>
-                </p>
+                </div>
+                <div className="app-player-buttons">
+                    <button onClick={this.handleNextClick}>Next Track >></button>
+                </div>
             </div>
         )
     }
