@@ -22,14 +22,21 @@ window.initApp = function () {
 };
 
 function renderApp() {
-    ReactDOM.render(
-        (
-            <Router history={hashHistory}>
-                <Route path="(:channelId)" component={RadioApp}/>
-            </Router>
-        ),
-        document.getElementById("app")
-    );
+    setTimeout(() => {
+        document.getElementsByTagName("body")[0].className = "";
+        document.getElementsByClassName("cover")[0].remove();
+        setTimeout(() => {
+            ReactDOM.render(
+                (
+                    <Router history={hashHistory}>
+                        <Route path="(:channelId)" component={RadioApp}/>
+                    </Router>
+                ),
+                document.getElementById("app")
+            );
+        }, 500)
+    }, 1000);
+
 }
 
 class RadioApp extends React.Component {

@@ -15,8 +15,25 @@
   .app-player-buttons {
     margin-top: 10px;
     button {
-      padding: 15px;
+      padding: 15px 20px 15px 20px;
       font-size: 16px;
+      color: #fff;
+      background-color: $red-bg-color;
+      cursor: pointer;
+      border:none;
+      box-shadow: 1px 0px 5px 0px $dark-bg-color;
+
+      &:hover {
+        opacity: 0.9;
+      }
+
+      &:focus {
+        outline: none;
+      }
+
+      &:active {
+        box-shadow: none;
+      }
     }
   }
 }
@@ -32,6 +49,12 @@
 
     .app-youtube-player {
       width: 100%;
+    }
+
+    .app-player-buttons {
+      button {
+        width: 100%;
+      }
     }
   }
 }
