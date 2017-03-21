@@ -24,7 +24,7 @@ window.initApp = function () {
 function renderApp() {
     setTimeout(() => {
         document.getElementsByTagName("body")[0].className = "";
-        document.getElementsByClassName("cover")[0].remove();
+        document.getElementById("app").innerHTML = "";
         setTimeout(() => {
             ReactDOM.render(
                 (
