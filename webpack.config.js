@@ -7,6 +7,11 @@ module.exports = function (options) {
             filename: "dist/app.css",
             allChunks: true,
         }),
+        new webpack.optimize.CommonsChunkPlugin({
+            name:"vendor",
+            filename: "dist/vendor.js",
+        }),
+
     ];
     if (!options.dev) {
         plugins.push(
@@ -22,7 +27,10 @@ module.exports = function (options) {
     }
 
     return {
-        entry: "./js/app.js",
+        entry: {
+            app: "./js/app.js",
+            vendor: ["react", "react-dom", "react-router", "axios", "react-youtube"],
+        },
         output: { path: __dirname, filename: "dist/app.js" },
         plugins: plugins,
         module: {
