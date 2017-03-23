@@ -11,38 +11,35 @@ export default class Menu extends React.PureComponent {
     }
 
     componentWillMount() {
-        this.setState({ expandedPath: this.getExpandedPathById(this.props.channelId) });
+        this.setState({ expandedPath: this.getExpandedPathByPathId(this.props.channelId) });
     }
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.channelId !== this.props.channelId) {
-            const expandedPath = this.getExpandedPathById(nextProps.channelId);
+            const expandedPath = this.getExpandedPathByPathId(nextProps.channelId);
             this.setState({ expandedPath });
         }
     }
 
     handleMenuItemClick(e) {
-        e.preventDefault();
-        e.stopPropagation();
-
-        const id = e.target.getAttribute("data-id");
-        const isFolder = e.target.getAttribute("data-type") === "folder";
-        if (isFolder) {
+        const path = e.target.getAttribute("data-path");
+        const channelId = e.target.getAttribute("data-channel-id");
+        if (channelId) {
+            this.props.onSelectChannel(channelId);
+        } else {
             const isExpanded = e.target.className.includes("expanded");
             if (isExpanded) {
-                const parts = id.split("\\");
+                const parts = path.split("\\");
                 parts.pop();
                 this.setState({ expandedPath: this.getExpandedPathByParts(parts) });
             } else {
-                const expandedPath = this.getExpandedPathById(id);
+                const expandedPath = this.getExpandedPathByPathId(path);
                 this.setState({ expandedPath });
             }
-        } else {
-            this.props.onSelectChannel(id);
         }
     }
 
-    getExpandedPathById(id) {
+    getExpandedPathByPathId(id) {
         if (typeof id === "undefined") {
             return {};
         }
@@ -64,17 +61,32 @@ export default class Menu extends React.PureComponent {
         return parentId ? `${parentId}\\${id}` : id;
     }
 
-    renderItem(id, title, type, isExpanded, children) {
+    renderChannel(channelId, title, path, isSelected) {
         return (
             <li
-                key={id}
-                data-id={id}
-                data-type={type}
+                key={channelId}
+                data-channel-id={channelId}
+                data-path={path}
+                className={isSelected ? "channel expanded"  : "channel"}
                 onClick={this.handleMenuItemClick}
-                className={isExpanded ? `${type} expanded` : type}
             >
                 {title}
-                {children ? children : null}
+            </li>
+        )
+    }
+
+    renderFolder(title, path, isExpanded, children) {
+        return (
+            <li
+                key={path}
+                data-path={path}
+                className={isExpanded ? "folder expanded"  : "folder"}
+                onClick={this.handleMenuItemClick}
+            >
+                {title}
+                <ul className={isExpanded ? "submenu expanded"  : "submenu"}>
+                    {children}
+                </ul>
             </li>
         )
     }
@@ -83,19 +95,14 @@ export default class Menu extends React.PureComponent {
         const result = [];
         const expandedPath = this.state.expandedPath;
         for (var key in data) {
-            const genre = data[key];
-            const id = this.concatParentIdAndId(parentId, genre.title);
-            if (!genre.children) {
-                result.push(this.renderItem(id, genre.title, "channel", id === this.props.channelId))
+            const item = data[key];
+            const path = this.concatParentIdAndId(parentId, item.title);
+            if (!item.children) {
+                const channelId = path; // todo: change
+                result.push(this.renderChannel(channelId, item.title, path, path === this.props.channelId));
             } else {
-                const className = expandedPath[id] ? "expanded" : "";
-                const children = (
-                    <ul className={`submenu ${className}`}>
-                        {this.renderItem(id, `All ${genre.title}`, "channel", this.props.channelId === id)}
-                        {this.renderGenresBranch(genre.children, id)}
-                    </ul>
-                );
-                result.push(this.renderItem(id, genre.title, "folder", expandedPath[id], children));
+                const children = this.renderGenresBranch(item.children, path);
+                result.push(this.renderFolder(item.title, path, expandedPath[path], children));
             }
         }
         return result;
