@@ -7,7 +7,7 @@ import Menu from "./components/menu";
 import TopBar from "./components/top-bar";
 import ChannelContent from "./components/channel-content";
 
-import genres from "./data/genres";
+import channels from "./data/channels";
 import ChannelsRegistry from "./services/channels-registry";
 import TracksLoader from "./services/tracks-loader";
 import PlayingQueue from "./services/playing-queue";
@@ -48,8 +48,9 @@ class RadioApp extends React.Component {
             isMenuForceShow: false,
         };
 
-        const channelsRegistry = new ChannelsRegistry(genres);
-        const trackLoader = new TracksLoader(channelsRegistry);
+        this.channelsRegistry = new ChannelsRegistry(channels);
+        console.log(this.channelsRegistry);
+        const trackLoader = new TracksLoader(this.channelsRegistry);
         this.playingQueue = new PlayingQueue(trackLoader);
     }
 
@@ -75,7 +76,7 @@ class RadioApp extends React.Component {
                 />
                 <Menu
                     channelId={channelId}
-                    genres={genres}
+                    channels={this.channelsRegistry.tree}
                     isForceShow={this.state.isMenuForceShow}
                     onSelectChannel={this.handleSelectChannel}
                 />

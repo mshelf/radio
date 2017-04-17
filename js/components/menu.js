@@ -1,49 +1,66 @@
 import React, { PropTypes } from "react";
 
 export default class Menu extends React.PureComponent {
-
     constructor() {
         super();
         this.handleMenuItemClick = this.handleMenuItemClick.bind(this);
+        this.noChangeExpandedPath = false;
         this.state = {
             expandedPath: {},
         }
     }
 
     componentWillMount() {
-        this.setState({ expandedPath: this.getExpandedPathByPathId(this.props.channelId) });
+        let expandedPath;
+        if (this.props.channelId) {
+            expandedPath = this.getExpandedPath(this.props.channelId);
+        } else {
+            expandedPath = this.getExpandedPath("Genres");
+        }
+        this.setExpandedPath(expandedPath);
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.channelId !== this.props.channelId) {
-            const expandedPath = this.getExpandedPathByPathId(nextProps.channelId);
-            this.setState({ expandedPath });
+        if ((nextProps.channelId !== this.props.channelId) && !this.noChangeExpandedPath) {
+            const expandedPath = this.getExpandedPath(nextProps.channelId);
+            this.setExpandedPath(expandedPath);
         }
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        this.noChangeExpandedPath = false;
+    }
+
+
+    setExpandedPath(expandedPath) {
+        this.noChangeExpandedPath = false;
+        this.setState({ expandedPath });
     }
 
     handleMenuItemClick(e) {
         const path = e.target.getAttribute("data-path");
         const channelId = e.target.getAttribute("data-channel-id");
         if (channelId) {
+            this.noChangeExpandedPath = true;
             this.props.onSelectChannel(channelId);
         } else {
             const isExpanded = e.target.className.includes("expanded");
             if (isExpanded) {
                 const parts = path.split("\\");
                 parts.pop();
-                this.setState({ expandedPath: this.getExpandedPathByParts(parts) });
+                this.setExpandedPath(this.getExpandedPathByParts(parts));
             } else {
-                const expandedPath = this.getExpandedPathByPathId(path);
-                this.setState({ expandedPath });
+                const expandedPath = this.getExpandedPath(path);
+                this.setExpandedPath(expandedPath);
             }
         }
     }
 
-    getExpandedPathByPathId(id) {
-        if (typeof id === "undefined") {
+    getExpandedPath(path) {
+        if (typeof path === "undefined") {
             return {};
         }
-        const parts = id.split("\\");
+        const parts = path.split("\\");
         return this.getExpandedPathByParts(parts);
     }
 
@@ -91,17 +108,21 @@ export default class Menu extends React.PureComponent {
         )
     }
 
-    renderGenresBranch(data, parentId) {
+    renderBranch(channels, parentId) {
         const result = [];
         const expandedPath = this.state.expandedPath;
-        for (var key in data) {
-            const item = data[key];
+        for (var key in channels) {
+            const item = channels[key];
             const path = this.concatParentIdAndId(parentId, item.title);
             if (!item.children) {
-                const channelId = path; // todo: change
-                result.push(this.renderChannel(channelId, item.title, path, path === this.props.channelId));
+                const channelId = item.id;
+                result.push(this.renderChannel(channelId, item.title, path, channelId === this.props.channelId));
             } else {
-                const children = this.renderGenresBranch(item.children, path);
+                const children = this.renderBranch(item.children, path);
+                if (!item.isJustContainer) {
+                    const commonChannel = this.renderChannel(item.id, `All ${item.title}`, path, item.id === this.props.channelId);
+                    children.unshift(commonChannel);
+                }
                 result.push(this.renderFolder(item.title, path, expandedPath[path], children));
             }
         }
@@ -109,12 +130,13 @@ export default class Menu extends React.PureComponent {
     }
 
     render() {
-        const genres = this.props.genres;
+        const channels = this.props.channels;
         const className = this.props.isForceShow ? "app-menu force-show" : "app-menu";
+
         return (
             <div className={className}>
                 <ul className="root">
-                    {this.renderGenresBranch(genres, "")}
+                    {this.renderBranch(channels, "")}
                 </ul>
             </div>
         )
@@ -124,4 +146,5 @@ export default class Menu extends React.PureComponent {
 Menu.propTypes = {
     channelId: PropTypes.string,
     onSelectChannel: PropTypes.func,
+    channels: PropTypes.array,
 };

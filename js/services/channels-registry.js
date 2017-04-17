@@ -1,7 +1,8 @@
 export default class ChannelsRegistry {
-    constructor(genres) {
+    constructor(channels) {
         this.registry = {};
-        addBranchToRegistry(genres, this.registry);
+        addBranchToRegistry(channels, this.registry, this.tree);
+        this.tree = channels;
     }
 
     getChannelDescriptor(channelId) {
@@ -9,14 +10,18 @@ export default class ChannelsRegistry {
     }
 }
 
-function addBranchToRegistry(dataBranch, registry, parentId) {
+function addBranchToRegistry(dataBranch, registry, tree, parentId) {
     dataBranch.forEach(item => {
         const id = concatParentIdAndId(parentId, item.title);
+        item.id = id;
+
+        if (!item.isJustContainer) {
+            const channelDescriptor = makeChannelDescriptor(id, item);
+            registry[id] = channelDescriptor;
+        }
+
         if (item.children) {
-            addBranchToRegistry(item.children, registry, id);
-            registry[id] = makeChannelDescriptor(id, item);
-        } else {
-            registry[id] = makeChannelDescriptor(id, item);
+            addBranchToRegistry(item.children, registry, tree, id);
         }
     });
 }
@@ -26,11 +31,15 @@ function concatParentIdAndId(parentId, id) {
 }
 
 function makeChannelDescriptor(id, channelData) {
-    return {
+    const descriptor = {
+        id,
         title: channelData.title,
         keywords: channelData.keywords,
-        childrenIds: channelData.children ? getAllChildrenIdsAsFlatArray(id, channelData.children) : undefined,
     };
+    if (!channelData.isFolder && channelData.children) {
+        descriptor.childrenIds = getAllChildrenIdsAsFlatArray(id, channelData.children);
+    }
+    return descriptor;
 }
 
 function getAllChildrenIdsAsFlatArray(parentId, children) {
