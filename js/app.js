@@ -11,6 +11,7 @@ import channels from "./data/channels";
 import ChannelsRegistry from "./services/channels-registry";
 import TracksLoader from "./services/tracks-loader";
 import PlayingQueue from "./services/playing-queue";
+import FavoritesStore from "./services/favorites-store";
 
 
 window.initApp = function () {
@@ -49,7 +50,8 @@ class RadioApp extends React.Component {
         };
 
         this.channelsRegistry = new ChannelsRegistry(channels);
-        console.log(this.channelsRegistry);
+        this.favoritesStore = new FavoritesStore(this.channelsRegistry);
+
         const trackLoader = new TracksLoader(this.channelsRegistry);
         this.playingQueue = new PlayingQueue(trackLoader);
     }
@@ -76,12 +78,14 @@ class RadioApp extends React.Component {
                 />
                 <Menu
                     channelId={channelId}
-                    channels={this.channelsRegistry.tree}
+                    channelsRegistry={this.channelsRegistry}
+                    favoritesStore={this.favoritesStore}
                     isForceShow={this.state.isMenuForceShow}
                     onSelectChannel={this.handleSelectChannel}
                 />
                 <ChannelContent
                     channelId={channelId}
+                    favoritesStore={this.favoritesStore}
                     playingQueue={this.playingQueue}
                 />
             </div>

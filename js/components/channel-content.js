@@ -2,8 +2,6 @@ import React, { PropTypes } from "react";
 import YouTube from "react-youtube";
 
 const YOUTUBE_PLAYER_OPTS = {
-    // height: "390",
-    // width: "640",
     playerVars: {
         autoplay: 1
     }
@@ -40,9 +38,11 @@ export default class ChannelContent extends React.PureComponent {
         });
 
         playingQueue.loadTracks(channelId);
+        this.props.favoritesStore.channelWasOpened(channelId);
     }
 
     handleNextClick() {
+        this.props.favoritesStore.trackWasStarted(this.props.channelId);
         this.props.playingQueue.loadTracks(this.props.channelId);
     }
 
@@ -88,5 +88,6 @@ export default class ChannelContent extends React.PureComponent {
 
 ChannelContent.propTypes = {
     channelId: PropTypes.string,
-    playingQueue: PropTypes.object,
+    playingQueue: PropTypes.object.isRequired,
+    favoritesStore: PropTypes.object.isRequired,
 };

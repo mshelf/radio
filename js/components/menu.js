@@ -12,10 +12,13 @@ export default class Menu extends React.PureComponent {
 
     componentWillMount() {
         let expandedPath;
-        if (this.props.channelId) {
-            expandedPath = this.getExpandedPath(this.props.channelId);
+        const { channelId, favoritesStore } = this.props;
+        if (channelId) {
+            expandedPath = this.getExpandedPath(channelId);
         } else {
-            expandedPath = this.getExpandedPath("Genres");
+            expandedPath = this.getExpandedPath(
+                favoritesStore.getFavoritesChannels().length > 0 ? "Favorites" : "Genres"
+            );
         }
         this.setExpandedPath(expandedPath);
     }
@@ -31,15 +34,17 @@ export default class Menu extends React.PureComponent {
         this.noChangeExpandedPath = false;
     }
 
-
     setExpandedPath(expandedPath) {
         this.noChangeExpandedPath = false;
         this.setState({ expandedPath });
     }
 
     handleMenuItemClick(e) {
-        const path = e.target.getAttribute("data-path");
-        const channelId = e.target.getAttribute("data-channel-id");
+        e.stopPropagation();
+        e.preventDefault();
+
+        const path = e.currentTarget.getAttribute("data-path");
+        const channelId = e.currentTarget.getAttribute("data-channel-id");
         if (channelId) {
             this.noChangeExpandedPath = true;
             this.props.onSelectChannel(channelId);
@@ -130,12 +135,20 @@ export default class Menu extends React.PureComponent {
     }
 
     render() {
-        const channels = this.props.channels;
+        const channels = this.props.channelsRegistry.tree;
         const className = this.props.isForceShow ? "app-menu force-show" : "app-menu";
+
+        const favoritesChannels = this.props.favoritesStore.getFavoritesChannels();
+        const favoritesFolder = [{
+            title: "Favorites",
+            isJustContainer: true,
+            children: favoritesChannels,
+        }];
 
         return (
             <div className={className}>
                 <ul className="root">
+                    {favoritesChannels.length > 0 ? this.renderBranch(favoritesFolder, "") : null}
                     {this.renderBranch(channels, "")}
                 </ul>
             </div>
@@ -145,6 +158,7 @@ export default class Menu extends React.PureComponent {
 
 Menu.propTypes = {
     channelId: PropTypes.string,
-    onSelectChannel: PropTypes.func,
-    channels: PropTypes.array,
+    onSelectChannel: PropTypes.func.isRequired,
+    channelsRegistry: PropTypes.object.isRequired,
+    favoritesStore: PropTypes.object.isRequired,
 };
