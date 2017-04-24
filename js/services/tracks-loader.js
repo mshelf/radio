@@ -1,8 +1,10 @@
 import { youtubeApiSearch, youtubeApiPlaylist } from "./youtube-api-client";
+import ArtistsApiClient from "./artists-api-client";
 
 export default class TracksLoader {
     constructor(channelsRegistry) {
         this.channelsRegistry = channelsRegistry;
+        this.artistsApiClient = new ArtistsApiClient();
     }
 
     loadTracks(channelId) {
@@ -11,11 +13,32 @@ export default class TracksLoader {
             channel = this.channelsRegistry.getChannelDescriptor(randomArrayItem(channel.childrenIds));
         }
 
-        const query = makeSearchQueryByKeywords(channel);
-        return youtubeApiSearch(query).then(
-            resultSet => getRandomTrackFromResultSet(resultSet, item => item.id)
-        );
+        return this.artistsApiClient.hasArtists(channel.id).then(hasArtists => {
+            if (hasArtists) {
+                return this._searchByArtists(channel);
+            } else {
+                return this._searchByKeywords(channel);
+            }
+        });
     }
+
+    _searchByArtists(channel) {
+        return this.artistsApiClient.getRandomArtist(channel.id).then(artist => {
+            const query = `${artist} album`;
+            return getSearchResult(query, artist);
+        }).then(track => track === null ? this._searchByKeywords(channel) : track);
+    }
+
+    _searchByKeywords(channel) {
+        const query = makeSearchQueryByKeywords(channel);
+        return getSearchResult(query);
+    }
+}
+
+function getSearchResult(query, filterByTitle = null) {
+    return youtubeApiSearch(query, filterByTitle).then(
+        resultSet => getRandomTrackFromResultSet(resultSet, item => item.id)
+    );
 }
 
 function makeSearchQueryByKeywords(channel) {
