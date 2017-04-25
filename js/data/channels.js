@@ -45,11 +45,7 @@ export default [
                     },
                     {
                         title: "Russian Rock",
-                        keywords: {
-                            query: ["Русский рок музыка", "Русский рок клипы"],
-                            epochPostfix: 1980,
-                            yearPostfix: 2000,
-                        }
+                        noUseKeywords: true,
                     }
                 ].sort(comparator),
             },
@@ -58,7 +54,7 @@ export default [
                 children: [
                     {
                         title: "Heavy Metal",
-                        keywords: ["New Wave of British Heavy Metal", "Heavy Metal", "hard and heavy"],
+                        noUseKeywords: true,
                     },
                     {
                         title: "Power Metal",

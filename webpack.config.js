@@ -29,7 +29,7 @@ module.exports = function (options) {
     return {
         entry: {
             app: "./js/app.js",
-            vendor: ["react", "react-dom", "react-router", "axios", "react-youtube"],
+            vendor: ["react", "react-dom", "react-router", "axios", "react-youtube", "slug"],
         },
         output: { path: __dirname, filename: "dist/app.js" },
         plugins: plugins,

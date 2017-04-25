@@ -14,10 +14,11 @@ export default class TracksLoader {
         }
 
         return this.artistsApiClient.hasArtists(channel.id).then(hasArtists => {
-            if (hasArtists) {
-                return this._searchByArtists(channel);
-            } else {
+            const useKeywords = !hasArtists || (!channel.noUseKeywords && (randomInt(5) % 5 === 0));
+            if (useKeywords) {
                 return this._searchByKeywords(channel);
+            } else {
+                return this._searchByArtists(channel);
             }
         });
     }
