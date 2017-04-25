@@ -29,7 +29,11 @@ export default class YoutubeApiClient {
         return axios.get(url).then(r => r.data);
     }
 
-    // https://www.googleapis.com/youtube/v3/videos?part=snippet&id={VIDEO_ID}&fields=items/snippet/title,items/snippet/description&key={YOUR_API_KEY}
+    getVideoInfo(videoId) {
+        const url = `${URL_BASE}/videos?part=snippet&id=${videoId}&fields=items(snippet/title,snippet/description)&key=${API_KEY}`;
+        return axios.get(url)
+            .then(r => r.data.items.length > 0 ? Object.assign({ id: videoId }, r.data.items[0].snippet) : null);
+    }
 }
 
 function filterResultSetByTitle(resultSet, filterForTitle) {

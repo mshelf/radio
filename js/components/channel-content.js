@@ -58,7 +58,7 @@ export default class ChannelContent extends React.PureComponent {
         }
 
         const duration = e.target.getDuration();
-        const channel = track.sourceChannel;
+        const channel = track.sourceData.channel;
         const maxTrackDuration = channel.maxTrackDuration ? channel.maxTrackDuration : 1000;
         if (duration > maxTrackDuration) {
             this.autoChangeTrackTimeoutId = setTimeout(() => {

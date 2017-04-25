@@ -14,54 +14,56 @@ export default class TracksLoader {
             channel = this.channelsRegistry.getChannelDescriptor(randomArrayItem(channel.childrenIds));
         }
 
-        return this.artistsApiClient.hasArtists(channel.id).then(hasArtists => {
-            const useKeywords = !hasArtists || (!channel.noUseKeywords && (randomInt(5) % 5 === 0));
-            return useKeywords ? this._searchByKeywords(channel) : this._searchByArtists(channel);
-        }).then(track => {
-            if (track !== null) {
-                track.sourceChannel = channel;
-            }
-            return track;
-        });
+        return this.artistsApiClient.hasArtists(channel.id)
+            .then(hasArtists => {
+                const useKeywords = !hasArtists || (!channel.noUseKeywords && (randomInt(5) % 5 === 0));
+                return useKeywords ? this._searchByKeywords(channel) : this._searchByArtists(channel);
+            });
     }
 
     _searchByArtists(channel) {
-        return this.artistsApiClient.getRandomArtist(channel.id).then(artist => {
-            const query = `${artist} album`;
-            return this._getSearchResult(query, artist);
-        }).then(track => track === null ? this._searchByKeywords(channel) : track);
+        return this.artistsApiClient.getRandomArtist(channel.id)
+            .then(artist => {
+                const query = `${artist} album`;
+                return this._getSearchResult(query, { channel,  artist });
+            })
+            // fallback if we could not find by artist
+            .then(track => track === null ? this._searchByKeywords(channel) : track);
     }
 
     _searchByKeywords(channel) {
         const query = makeSearchQueryByKeywords(channel);
-        return this._getSearchResult(query);
+        return this._getSearchResult(query, { channel });
     }
 
-    _getSearchResult(query, filterForTitle = null) {
-        return this.youtubeApiClient.search(query, filterForTitle).then(
-            resultSet => this._getRandomTrackFromResultSet(resultSet, item => item.id)
-        );
+    _getSearchResult(query, sourceData) {
+        const filterForTitle = sourceData.artist ? sourceData.artist : null;
+        return this.youtubeApiClient.search(query, filterForTitle)
+            // choose video from result set
+            .then(resultSet => this._getRandomVideoIdFromResultSet(resultSet, item => item.id))
+            // get video description
+            .then(videoId => videoId === null ? null : this.youtubeApiClient.getVideoInfo(videoId))
+            // add info about channel and artist to video info
+            .then(data => {
+                return data === null
+                    ? null
+                    : Object.assign(data, { sourceData });
+            });
     }
 
-    _getRandomTrackFromResultSet(resultSet, getIdFromItem) {
+    _getRandomVideoIdFromResultSet(resultSet, getIdFromItem) {
         if (resultSet.items.length > 0) {
             const num = Math.floor(Math.random() * resultSet.items.length);
             const id = getIdFromItem(resultSet.items[num]);
             if (id.kind === "youtube#video") {
-                return this._getTrackByVideoId(id.videoId);
+                return id.videoId;
             } else {
                 return this.youtubeApiClient.getPlaylistItems(id.playlistId).then(
-                    resultSetInner => this._getRandomTrackFromResultSet(resultSetInner, item => item.snippet.resourceId)
+                    resultSetInner => this._getRandomVideoIdFromResultSet(resultSetInner, item => item.snippet.resourceId)
                 );
             }
         } else {
             return null;
-        }
-    }
-
-    _getTrackByVideoId(videoId) {
-        return {
-            id: videoId
         }
     }
 }
@@ -110,23 +112,6 @@ function makeSearchQueryByKeywords(channel) {
             } else {
                 return query;
             }
-    }
-}
-
-function getRandomTrackFromResultSet(resultSet, getIdFromItem) {
-    if (resultSet.items.length > 0) {
-        const num = Math.floor(Math.random() * resultSet.items.length);
-        const id = getIdFromItem(resultSet.items[num]);
-        if (id.kind === "youtube#video") {
-            return id.videoId;
-        } else {
-            return youtubeApiPlaylist(id.playlistId).then(
-                resultSetInner => getRandomTrackFromResultSet(resultSetInner, item => item.snippet.resourceId)
-            );
-        }
-
-    } else {
-        return null;
     }
 }
 
