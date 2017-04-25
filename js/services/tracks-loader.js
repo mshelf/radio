@@ -16,11 +16,12 @@ export default class TracksLoader {
 
         return this.artistsApiClient.hasArtists(channel.id).then(hasArtists => {
             const useKeywords = !hasArtists || (!channel.noUseKeywords && (randomInt(5) % 5 === 0));
-            if (useKeywords) {
-                return this._searchByKeywords(channel);
-            } else {
-                return this._searchByArtists(channel);
+            return useKeywords ? this._searchByKeywords(channel) : this._searchByArtists(channel);
+        }).then(track => {
+            if (track !== null) {
+                track.sourceChannel = channel;
             }
+            return track;
         });
     }
 
@@ -47,7 +48,7 @@ export default class TracksLoader {
             const num = Math.floor(Math.random() * resultSet.items.length);
             const id = getIdFromItem(resultSet.items[num]);
             if (id.kind === "youtube#video") {
-                return id.videoId;
+                return this._getTrackByVideoId(id.videoId);
             } else {
                 return this.youtubeApiClient.getPlaylistItems(id.playlistId).then(
                     resultSetInner => this._getRandomTrackFromResultSet(resultSetInner, item => item.snippet.resourceId)
@@ -55,6 +56,12 @@ export default class TracksLoader {
             }
         } else {
             return null;
+        }
+    }
+
+    _getTrackByVideoId(videoId) {
+        return {
+            id: videoId
         }
     }
 }

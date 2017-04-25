@@ -12,6 +12,8 @@ export default class ChannelContent extends React.PureComponent {
         super();
         this.state = {};
         this.handleNextClick = this.handleNextClick.bind(this);
+        this.handlePlayerStateChange = this.handlePlayerStateChange.bind(this);
+        this.autoChangeTrackTimeoutId = 0;
     }
 
     componentDidMount() {
@@ -28,13 +30,15 @@ export default class ChannelContent extends React.PureComponent {
 
     setChannel(channelId) {
         if (!channelId) {
-            this.setState({ videoId: null });
+            this.setState({ track: null });
             return;
         }
 
         const playingQueue = this.props.playingQueue;
         this.props.playingQueue.setOnChangeHandler(() => {
-            this.setState({ videoId: playingQueue.getNextTrack() });
+            this.props.favoritesStore.trackWasStarted(this.props.channelId);
+            const track = playingQueue.getNextTrack();
+            this.setState({ track });
         });
 
         playingQueue.loadTracks(channelId);
@@ -42,8 +46,25 @@ export default class ChannelContent extends React.PureComponent {
     }
 
     handleNextClick() {
-        this.props.favoritesStore.trackWasStarted(this.props.channelId);
         this.props.playingQueue.loadTracks(this.props.channelId);
+    }
+
+    handlePlayerStateChange(e) {
+        clearTimeout(this.autoChangeTrackTimeoutId);
+
+        const track = this.state.track;
+        if (!track || e.target.getPlayerState() !== 1) {
+            return;
+        }
+
+        const duration = e.target.getDuration();
+        const channel = track.sourceChannel;
+        const maxTrackDuration = channel.maxTrackDuration ? channel.maxTrackDuration : 1000;
+        if (duration > maxTrackDuration) {
+            this.autoChangeTrackTimeoutId = setTimeout(() => {
+                this.props.playingQueue.loadTracks(this.props.channelId);
+            }, maxTrackDuration * 1000);
+        }
     }
 
     getChannelNameById(channelId) {
@@ -51,8 +72,8 @@ export default class ChannelContent extends React.PureComponent {
     }
 
     renderPlayer() {
-        const videoId = this.state.videoId;
-        if (!videoId) {
+        const track = this.state.track;
+        if (!track) {
             return null;
         }
         return (
@@ -61,8 +82,9 @@ export default class ChannelContent extends React.PureComponent {
                     <YouTube
                         opts={YOUTUBE_PLAYER_OPTS}
                         className="app-youtube-player"
-                        videoId={videoId}
+                        videoId={track.id}
                         onEnd={this.handleNextClick}
+                        onStateChange={this.handlePlayerStateChange}
                     />
                 </div>
                 <div className="app-player-buttons">

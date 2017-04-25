@@ -31,6 +31,7 @@ export default [
                             query: ["post rock", "shoegaze music", "post punk"],
                             yearPostfix: 2000
                         },
+                        maxTrackDuration: 1800,
                     },
                     {
                         title: "Alternative Rock",
@@ -99,7 +100,8 @@ export default [
                         keywords: {
                             query: ["post metal", "post black metal"],
                             yearPostfix: 2005
-                        }
+                        },
+                        maxTrackDuration: 1800,
                     },
                     {
                         title: "Folk Metal",
@@ -112,9 +114,11 @@ export default [
             },
             {
                 title: "Electronic",
+                maxTrackDuration: 10800,
                 children: [
                     {
                         title: "Ambient",
+                        maxTrackDuration: 10800,
                         keywords: {
                             query: "ambient music -chillout",
                             yearPostfix: 2015
@@ -122,6 +126,7 @@ export default [
                     },
                     {
                         title: "House",
+                        maxTrackDuration: 10800,
                         children: [
                             {
                                 title: "Deep House",
@@ -135,21 +140,26 @@ export default [
                     },
                     {
                         title: "Trance",
+                        maxTrackDuration: 10800,
                         children: [
                             {
                                 title: "Progressive Trance",
+                                maxTrackDuration: 10800,
                                 keywords: { yearPostfix: 2005 }
                             },
                             {
                                 title: "Uplifting Trance",
+                                maxTrackDuration: 10800,
                                 keywords: { yearPostfix: 2005 }
                             },
                             {
                                 title: "Vocal Trance",
+                                maxTrackDuration: 10800,
                                 keywords: { yearPostfix: 2005 }
                             },
                             {
                                 title: "Goa-Psy Trance",
+                                maxTrackDuration: 10800,
                                 keywords: {
                                     yearPostfix: 2000,
                                     epochPostfix: 1990,
@@ -178,23 +188,28 @@ export default [
                     },
                     {
                         title: "Light & Relax",
+                        maxTrackDuration: 10800,
                         children: [
                             {
                                 title: "Lounge",
+                                maxTrackDuration: 10800,
                                 keywords: { yearPostfix: 2010 }
                             },
                             {
                                 title: "Chillout",
+                                maxTrackDuration: 10800,
                                 keywords: { yearPostfix: 2010 }
                             },
                             {
                                 title: "Trip-Hop",
+                                maxTrackDuration: 10800,
                                 keywords: { yearPostfix: 2010 }
                             },
                         ].sort(comparator)
                     },
                     {
                         title: "Drum & Bass",
+                        maxTrackDuration: 10800,
                         keywords: {
                             query: ["Drum & Bass", "liquid drum and bass"],
                             yearPostfix: 2005,
@@ -202,6 +217,7 @@ export default [
                     },
                     {
                         title: "Techno",
+                        maxTrackDuration: 10800,
                         keywords: {
                             query: ["Techno", "Detroit techno"],
                             yearPostfix: 2005,
@@ -222,21 +238,27 @@ export default [
             },
             {
                 title: "Jazz",
+                maxTrackDuration: 3600,
                 children: [
                     {
                         title: "Classic Jazz",
+                        maxTrackDuration: 3600,
                     },
                     {
                         title: "Bebop Jazz",
+                        maxTrackDuration: 3600,
                     },
                     {
                         title: "Piano Jazz",
+                        maxTrackDuration: 3600,
                     },
                     {
                         title: "Acid Jazz",
+                        maxTrackDuration: 3600,
                     },
                     {
                         title: "Avantgarde Jazz",
+                        maxTrackDuration: 3600,
                     },
                 ].sort(comparator)
             },
@@ -249,17 +271,21 @@ export default [
             },
             {
                 title: "Classical",
+                maxTrackDuration: 3600,
             },
             {
                 title: "Instrumental",
+                maxTrackDuration: 3600,
                 children: [
                     {
                         title: "Guitar",
                         keywords: "instrumental guitar music",
+                        maxTrackDuration: 3600,
                     },
                     {
                         title: "Piano",
                         keywords: "instrumental piano music",
+                        maxTrackDuration: 3600,
                     },
                 ].sort(comparator)
             }
