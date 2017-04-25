@@ -1,10 +1,11 @@
-import { youtubeApiSearch, youtubeApiPlaylist } from "./youtube-api-client";
 import ArtistsApiClient from "./artists-api-client";
+import YoutubeApiClient from "./youtube-api-client";
 
 export default class TracksLoader {
     constructor(channelsRegistry) {
         this.channelsRegistry = channelsRegistry;
         this.artistsApiClient = new ArtistsApiClient();
+        this.youtubeApiClient = new YoutubeApiClient();
     }
 
     loadTracks(channelId) {
@@ -26,21 +27,38 @@ export default class TracksLoader {
     _searchByArtists(channel) {
         return this.artistsApiClient.getRandomArtist(channel.id).then(artist => {
             const query = `${artist} album`;
-            return getSearchResult(query, artist);
+            return this._getSearchResult(query, artist);
         }).then(track => track === null ? this._searchByKeywords(channel) : track);
     }
 
     _searchByKeywords(channel) {
         const query = makeSearchQueryByKeywords(channel);
-        return getSearchResult(query);
+        return this._getSearchResult(query);
+    }
+
+    _getSearchResult(query, filterForTitle = null) {
+        return this.youtubeApiClient.search(query, filterForTitle).then(
+            resultSet => this._getRandomTrackFromResultSet(resultSet, item => item.id)
+        );
+    }
+
+    _getRandomTrackFromResultSet(resultSet, getIdFromItem) {
+        if (resultSet.items.length > 0) {
+            const num = Math.floor(Math.random() * resultSet.items.length);
+            const id = getIdFromItem(resultSet.items[num]);
+            if (id.kind === "youtube#video") {
+                return id.videoId;
+            } else {
+                return this.youtubeApiClient.getPlaylistItems(id.playlistId).then(
+                    resultSetInner => this._getRandomTrackFromResultSet(resultSetInner, item => item.snippet.resourceId)
+                );
+            }
+        } else {
+            return null;
+        }
     }
 }
 
-function getSearchResult(query, filterByTitle = null) {
-    return youtubeApiSearch(query, filterByTitle).then(
-        resultSet => getRandomTrackFromResultSet(resultSet, item => item.id)
-    );
-}
 
 function makeSearchQueryByKeywords(channel) {
     // get keywords config from channel data
