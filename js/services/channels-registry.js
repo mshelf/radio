@@ -31,11 +31,7 @@ function concatParentIdAndId(parentId, id) {
 }
 
 function makeChannelDescriptor(id, channelData) {
-    const descriptor = {
-        id,
-        title: channelData.title,
-        keywords: channelData.keywords,
-    };
+    const descriptor = Object.assign({ id }, channelData);
     if (!channelData.isFolder && channelData.children) {
         descriptor.childrenIds = getAllChildrenIdsAsFlatArray(id, channelData.children);
     }
