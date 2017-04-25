@@ -5,9 +5,11 @@ rm index.html
 rm favicon.ico
 rm -rf dist/*
 rm -rf img/*
+rm -rf data/artists/*
 
 cp ../radio/dist/* dist/
 cp ../radio/img/* img/
+cp ../radio/data/artists/* data/artists/
 cp ../radio/index.html .
 cp ../radio/favicon.ico .
 

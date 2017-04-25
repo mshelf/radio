@@ -19,7 +19,7 @@ export default class ArtistsApiClient {
     _getMetadata() {
         return this.metadata
             ? Promise.resolve(this.metadata)
-            : axios.get("data/artists/metadata.json").then(r => {
+            : axios.get("data/artists/metadata.json?" + Math.random()).then(r => {
                 this.metadata = r.data;
                 return r.data;
             });
