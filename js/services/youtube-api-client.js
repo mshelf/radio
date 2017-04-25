@@ -28,6 +28,8 @@ export default class YoutubeApiClient {
         const url = `${URL_BASE}/playlistItems?part=snippet&key=${API_KEY}&maxResults=30&playlistId=${playlistId}&fields=items(snippet/resourceId)`;
         return axios.get(url).then(r => r.data);
     }
+
+    // https://www.googleapis.com/youtube/v3/videos?part=snippet&id={VIDEO_ID}&fields=items/snippet/title,items/snippet/description&key={YOUR_API_KEY}
 }
 
 function filterResultSetByTitle(resultSet, filterForTitle) {
