@@ -1,5 +1,6 @@
 import ArtistsApiClient from "./artists-api-client";
 import YoutubeApiClient from "./youtube-api-client";
+import { parseTracklistTimes } from "./tracklist-parser";
 
 export default class TracksLoader {
     constructor(channelsRegistry) {
@@ -45,9 +46,13 @@ export default class TracksLoader {
             .then(videoId => videoId === null ? null : this.youtubeApiClient.getVideoInfo(videoId))
             // add info about channel and artist to video info
             .then(data => {
-                return data === null
-                    ? null
-                    : Object.assign(data, { sourceData });
+                if (data === null) {
+                    return { sourceData };
+                }
+                if (data.description) {
+                    data.tracklist = parseTracklistTimes(data.description);
+                }
+                return Object.assign(data, { sourceData });
             });
     }
 
