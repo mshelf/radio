@@ -1,6 +1,7 @@
 import ArtistsApiClient from "./artists-api-client";
 import YoutubeApiClient from "./youtube-api-client";
 import { parseTracklistTimes } from "./tracklist-parser";
+import { randomArrayItem, randomInt, randomIntFromInterval } from "./utils";
 
 export default class TracksLoader {
     constructor(channelsRegistry) {
@@ -49,9 +50,7 @@ export default class TracksLoader {
                 if (data === null) {
                     return { sourceData };
                 }
-                if (data.description) {
-                    data.tracklist = parseTracklistTimes(data.description);
-                }
+                data.tracklist = data.description ? parseTracklistTimes(data.description) : [];
                 return Object.assign(data, { sourceData });
             });
     }
@@ -62,6 +61,7 @@ export default class TracksLoader {
             const id = getIdFromItem(resultSet.items[num]);
             if (id.kind === "youtube#video") {
                 return id.videoId;
+                // return "EMrFJ2ze6qA";
             } else {
                 return this.youtubeApiClient.getPlaylistItems(id.playlistId).then(
                     resultSetInner => this._getRandomVideoIdFromResultSet(resultSetInner, item => item.snippet.resourceId)
@@ -118,18 +118,6 @@ function makeSearchQueryByKeywords(channel) {
                 return query;
             }
     }
-}
-
-function randomInt(maxValue) {
-    return Math.floor(Math.random() * maxValue);
-}
-
-function randomIntFromInterval(min, max) {
-    return Math.floor(Math.random() * (max - min)) + min;
-}
-
-function randomArrayItem(items) {
-    return items[randomInt(items.length)];
 }
 
 function getRandomEpoch(start) {

@@ -1,5 +1,7 @@
 import React, { PropTypes } from "react";
 import YouTube from "react-youtube";
+import { getNearestTime } from "../services/tracklist-parser";
+import { randomIntFromInterval } from "../services/utils";
 
 const YOUTUBE_PLAYER_OPTS = {
     playerVars: {
@@ -10,10 +12,12 @@ const YOUTUBE_PLAYER_OPTS = {
 export default class ChannelContent extends React.PureComponent {
     constructor() {
         super();
-        this.state = {};
+        this.state = { isStarted: false };
         this.handleNextClick = this.handleNextClick.bind(this);
         this.handlePlayerStateChange = this.handlePlayerStateChange.bind(this);
         this.autoChangeTrackTimeoutId = 0;
+
+        this.isStarted = false;
     }
 
     componentDidMount() {
@@ -30,7 +34,7 @@ export default class ChannelContent extends React.PureComponent {
 
     setChannel(channelId) {
         if (!channelId) {
-            this.setState({ track: null });
+            this.setTrack(null);
             return;
         }
 
@@ -38,11 +42,16 @@ export default class ChannelContent extends React.PureComponent {
         this.props.playingQueue.setOnChangeHandler(() => {
             this.props.favoritesStore.trackWasStarted(this.props.channelId);
             const track = playingQueue.getNextTrack();
-            this.setState({ track });
+            this.setTrack(track);
         });
 
         playingQueue.loadTracks(channelId);
         this.props.favoritesStore.channelWasOpened(channelId);
+    }
+
+    setTrack(track) {
+        this.isStarted = false;
+        this.setState({ track });
     }
 
     handleNextClick() {
@@ -60,10 +69,31 @@ export default class ChannelContent extends React.PureComponent {
         const duration = e.target.getDuration();
         const channel = track.sourceData.channel;
         const maxTrackDuration = channel.maxTrackDuration ? channel.maxTrackDuration : 1000;
-        if (duration > maxTrackDuration) {
+        const isLong = duration > maxTrackDuration;
+
+        // start new video
+        if (!this.isStarted) {
+            this.isStarted = true;
+            // start long track from random position
+            if (isLong) {
+                const startTime = track.tracklist.length > 0
+                    ? getNearestTime(track.tracklist, randomIntFromInterval(0, duration - maxTrackDuration))
+                    : randomIntFromInterval(0, duration - maxTrackDuration);
+                e.target.seekTo(startTime);
+                return;
+            }
+        }
+
+        // set auto-change for long track
+        if (isLong) {
+            const currentTime = Math.floor(e.target.getCurrentTime());
+            const endTime = track.tracklist.length > 0
+                ? getNearestTime(track.tracklist, currentTime + maxTrackDuration)
+                : currentTime + maxTrackDuration;
+
             this.autoChangeTrackTimeoutId = setTimeout(() => {
                 this.props.playingQueue.loadTracks(this.props.channelId);
-            }, maxTrackDuration * 1000);
+            }, (endTime - currentTime) * 1000);
         }
     }
 

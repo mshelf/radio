@@ -24,3 +24,17 @@ export function parseTracklistTimes(description) {
     }
     return result;
 }
+
+export function getNearestTime(tracks, time) {
+    var min = 99999999;
+    var d;
+    var track = tracks[0];
+    for (var i = 0; i < tracks.length; i++) {
+        d = Math.abs(tracks[i].time - time);
+        if (d < min) {
+            min = d;
+            track = tracks[i];
+        }
+    }
+    return track.time;
+}
