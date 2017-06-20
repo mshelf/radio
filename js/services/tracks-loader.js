@@ -1,7 +1,7 @@
 import ArtistsApiClient from "./artists-api-client";
 import YoutubeApiClient from "./youtube-api-client";
 import { parseTracklistTimes } from "./tracklist-parser";
-import { randomArrayItem, randomInt, randomIntFromInterval } from "./utils";
+import { randomArrayItem, randomInt, randomIntFromInterval, log } from "./utils";
 
 export default class TracksLoader {
     constructor(channelsRegistry) {
@@ -32,7 +32,7 @@ export default class TracksLoader {
                 return this._getSearchResult(query, { channel,  artist });
             })
             // fallback if we could not find by artist
-            .then(track => track === null ? this._searchByKeywords(channel) : track);
+            .then(track => trackIsNull(track) ? this._searchByKeywords(channel) : track);
     }
 
     _searchByKeywords(channel) {
@@ -41,6 +41,7 @@ export default class TracksLoader {
     }
 
     _getSearchResult(query, sourceData) {
+        log(query);
         const filterForTitle = sourceData.artist ? sourceData.artist : null;
         return this.youtubeApiClient.search(query, filterForTitle)
             // choose video from result set
@@ -50,6 +51,7 @@ export default class TracksLoader {
             // add info about channel and artist to video info
             .then(data => {
                 if (data === null) {
+                    log("cannot load info");
                     return { sourceData };
                 }
                 data.tracklist = data.description ? parseTracklistTimes(data.description) : [];
@@ -62,14 +64,17 @@ export default class TracksLoader {
             const num = Math.floor(Math.random() * resultSet.items.length);
             const id = getIdFromItem(resultSet.items[num]);
             if (id.kind === "youtube#video") {
+                log(` - video ${id.videoId}`);
                 return id.videoId;
                 // return "EMrFJ2ze6qA";
             } else {
+                log(` - playlist ${id.playlistId}`);
                 return this.youtubeApiClient.getPlaylistItems(id.playlistId).then(
                     resultSetInner => this._getRandomVideoIdFromResultSet(resultSetInner, item => item.snippet.resourceId)
                 );
             }
         } else {
+            log("!!! empty list");
             return null;
         }
     }
@@ -127,4 +132,8 @@ function getRandomEpoch(start) {
     const currentEpoch = year - (year % 10);
     const randomEpoch = start + randomInt(1 + Math.floor((currentEpoch - start) / 10)) * 10;
     return `${randomEpoch}s`;
+}
+
+function trackIsNull(track) {
+    return track === null || !track.id;
 }
