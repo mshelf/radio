@@ -118,7 +118,7 @@ export default class ChannelContent extends React.PureComponent {
                     />
                 </div>
                 <div className="app-player-buttons">
-                    <button onClick={this.handleNextClick}>Next Track >></button>
+                    <button className="shadow" onClick={this.handleNextClick}>Next Track >></button>
                 </div>
             </div>
         )

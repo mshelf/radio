@@ -8,6 +8,11 @@
   width: calc(100% - #{$menu-width} - 10px - #{$content-padding*2});
   max-width: 768px;
 
+  .app-content-header {
+    color: $red-bg-color;
+    text-shadow: 1px 1px 5px $dark-bg-color;
+  }
+
   .app-youtube-player {
     width: calc(100% - 10px);
   }
@@ -21,7 +26,6 @@
       background-color: $red-bg-color;
       cursor: pointer;
       border:none;
-      box-shadow: 1px 0px 5px 0px $dark-bg-color;
 
       &:hover {
         opacity: 0.9;

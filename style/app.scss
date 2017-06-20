@@ -4,22 +4,11 @@ body {
   margin: 0;
   padding: 0;
   font-family: Arial,Helvetica,sans-serif;
-  background-color: #e5e5e5;
-  transition: background-color 500ms linear;
+  background: #d9dce3 url("../img/content-bg.jpg");
+}
 
-  &.not-loaded {
-    background-color: #000;
-    text-align: center;
-    overflow: hidden;
-    color: #e5e5e5;
-    font-size: 18px;
-
-    .cover {
-      width: 100%;
-      max-width: 610px;
-      margin-top: 30px;
-    }
-  }
+.shadow {
+  box-shadow: 1px 0px 5px 0px $dark-bg-color;
 }
 
 @import "top-bar";

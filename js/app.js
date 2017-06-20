@@ -23,20 +23,14 @@ window.initApp = function () {
 };
 
 function renderApp() {
-    setTimeout(() => {
-        document.getElementsByTagName("body")[0].className = "";
-        document.getElementById("app").innerHTML = "";
-        setTimeout(() => {
-            ReactDOM.render(
-                (
-                    <Router history={hashHistory}>
-                        <Route path="(:channelId)" component={RadioApp}/>
-                    </Router>
-                ),
-                document.getElementById("app")
-            );
-        }, 500)
-    }, 1000);
+    ReactDOM.render(
+        (
+            <Router history={hashHistory}>
+                <Route path="(:channelId)" component={RadioApp}/>
+            </Router>
+        ),
+        document.getElementById("app")
+    );
 
 }
 

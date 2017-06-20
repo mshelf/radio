@@ -136,7 +136,7 @@ export default class Menu extends React.PureComponent {
 
     render() {
         const channels = this.props.channelsRegistry.tree;
-        const className = this.props.isForceShow ? "app-menu force-show" : "app-menu";
+        const className = this.props.isForceShow ? "app-menu shadow force-show" : "app-menu shadow";
 
         const favoritesChannels = this.props.favoritesStore.getFavoritesChannels();
         const favoritesFolder = [{
