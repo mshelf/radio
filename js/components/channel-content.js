@@ -1,4 +1,5 @@
-import React, { PropTypes } from "react";
+import React from "react";
+import PropTypes from "prop-types";
 import YouTube from "react-youtube";
 import { getNearestTime } from "../services/tracklist-parser";
 import { randomIntFromInterval } from "../services/utils";

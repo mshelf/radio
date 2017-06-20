@@ -18,7 +18,9 @@ export default class TracksLoader {
 
         return this.artistsApiClient.hasArtists(channel.id)
             .then(hasArtists => {
-                const useKeywords = !hasArtists || (!channel.noUseKeywords && (randomInt(5) % 5 === 0));
+                const useKeywordsFactor = channel.useKeywordsFactor ? channel.useKeywordsFactor : 5;
+                const useKeywords = !hasArtists
+                    || (!channel.noUseKeywords && (randomInt(useKeywordsFactor) % useKeywordsFactor === 0));
                 return useKeywords ? this._searchByKeywords(channel) : this._searchByArtists(channel);
             });
     }

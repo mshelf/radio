@@ -31,6 +31,7 @@ export default [
                             query: ["post rock", "shoegaze music", "post punk"],
                             yearPostfix: 2000
                         },
+                        useKeywordsFactor: 2,
                         maxTrackDuration: 1800,
                     },
                     {
@@ -101,6 +102,7 @@ export default [
                             query: ["post metal", "post black metal"],
                             yearPostfix: 2005
                         },
+                        useKeywordsFactor: 2,
                         maxTrackDuration: 1800,
                     },
                     {
