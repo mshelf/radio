@@ -12,22 +12,23 @@
   "license": "ISC",
   "devDependencies": {
     "babel-core": "^6.23.1",
-    "babel-loader": "^6.3.2",
+    "babel-loader": "^7.1.0",
     "babel-preset-es2015-webpack": "^6.4.3",
     "babel-preset-react": "^6.23.0",
-    "css-loader": "^0.26.2",
+    "css-loader": "^0.28.4",
     "extract-text-webpack-plugin": "^2.0.0",
-    "file-loader": "^0.10.1",
+    "file-loader": "^0.11.2",
     "node-sass": "^4.5.0",
     "sass-loader": "^6.0.2",
-    "webpack": "^2.2.1",
+    "webpack": "^3.0.0",
     "webpack-dev-server": "^2.4.1"
   },
   "dependencies": {
-    "axios": "^0.15.3",
+    "axios": "^0.16.2",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
-    "react-router": "^3.0.2",
+    "react-router": "^4.1.1",
+    "react-router-dom": "^4.1.1",
     "react-youtube": "^7.3.0",
     "slug": "^0.9.1"
   }

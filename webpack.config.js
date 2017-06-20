@@ -29,7 +29,7 @@ module.exports = function (options) {
     return {
         entry: {
             app: "./js/app.js",
-            vendor: ["react", "react-dom", "react-router", "axios", "react-youtube", "slug"],
+            vendor: ["react", "react-dom", "react-router-dom", "axios", "react-youtube", "slug"],
         },
         output: { path: __dirname, filename: "dist/app.js" },
         plugins: plugins,
@@ -70,6 +70,7 @@ module.exports = function (options) {
                     options: {
                         name: "[name].[ext]",
                         outputPath: "dist/",
+                        useRelativePath: true,
                     }
                 }
             ]

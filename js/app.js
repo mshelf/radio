@@ -1,7 +1,7 @@
 import "../style/app.scss";
 import React from "react";
 import ReactDOM from "react-dom";
-import { Router, Route, hashHistory } from "react-router";
+import { HashRouter, Route, withRouter } from "react-router-dom";
 
 import Menu from "./components/menu";
 import TopBar from "./components/top-bar";
@@ -25,9 +25,9 @@ window.initApp = function () {
 function renderApp() {
     ReactDOM.render(
         (
-            <Router history={hashHistory}>
-                <Route path="(:channelId)" component={RadioApp}/>
-            </Router>
+            <HashRouter>
+                <Route path="/:channelId?" component={withRouter(RadioApp)}/>
+            </HashRouter>
         ),
         document.getElementById("app")
     );
@@ -57,14 +57,14 @@ class RadioApp extends React.Component {
     }
 
     handleSelectChannel(channelId) {
-        if (this.props.params.channelId !== channelId) {
-            this.context.router.push(channelId);
+        if (this.props.match.params.channelId !== channelId) {
+            this.props.history.push(channelId);
             this.setState({ isMenuForceShow: false });
         }
     }
 
     render() {
-        const channelId = this.props.params.channelId;
+        const channelId = this.props.match.params.channelId;
         return (
             <div>
                 <TopBar
