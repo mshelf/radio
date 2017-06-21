@@ -1,0 +1,29 @@
+@import "variables";
+
+.app-button {
+  padding: 15px 20px 15px 20px;
+  font-size: 16px;
+  color: #fff;
+  background-color: $red-bg-color;
+  cursor: pointer;
+  border:none;
+  text-decoration: none;
+  display: inline-block;
+
+  &:hover {
+    opacity: 0.9;
+  }
+
+  &:focus {
+    outline: none;
+  }
+
+  &:active {
+    box-shadow: none;
+  }
+
+  &--blue {
+    background-color: $blue-bg-color;
+  }
+}
+

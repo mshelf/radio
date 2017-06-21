@@ -118,8 +118,24 @@ export default class ChannelContent extends React.PureComponent {
                         onStateChange={this.handlePlayerStateChange}
                     />
                 </div>
-                <div className="app-player-buttons">
-                    <button className="shadow" onClick={this.handleNextClick}>Next Track >></button>
+                <div className="app-player-controls">
+                    <button
+                        className="app-button shadow app-player-controls__button"
+                        onClick={this.handleNextClick}>Next Track >>
+                    </button>
+
+                    <a
+                        className="app-button app-button--blue shadow app-player-controls__button app-player-controls__button--search"
+                        href="https://vk.com"
+                        onClick={this.handleNextClick}>
+                        Search on VK
+                    </a>
+
+                    <a
+                        className="app-button app-button--blue shadow app-player-controls__button app-player-controls__button--search"
+                        href="https://music.yandex.ru"
+                        onClick={this.handleNextClick}>Search on Yandex
+                    </a>
                 </div>
             </div>
         )

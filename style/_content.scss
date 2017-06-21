@@ -14,29 +14,21 @@
   }
 
   .app-youtube-player {
-    width: calc(100% - 10px);
+    width: 100%;
   }
 
-  .app-player-buttons {
+  .app-player-controls {
     margin-top: 10px;
-    button {
-      padding: 15px 20px 15px 20px;
-      font-size: 16px;
-      color: #fff;
-      background-color: $red-bg-color;
-      cursor: pointer;
-      border:none;
 
-      &:hover {
-        opacity: 0.9;
+    &__button {
+      margin-left: 10px;
+
+      &--search {
+        float: right;
       }
 
-      &:focus {
-        outline: none;
-      }
-
-      &:active {
-        box-shadow: none;
+      &:first-child {
+        margin-left: 0;
       }
     }
   }
