@@ -124,18 +124,21 @@ export default class ChannelContent extends React.PureComponent {
                         onClick={this.handleNextClick}>Next Track >>
                     </button>
 
-                    <a
-                        className="app-button app-button--blue shadow app-player-controls__button app-player-controls__button--search"
-                        href="https://vk.com"
-                        onClick={this.handleNextClick}>
-                        Search on VK
-                    </a>
+                    <div className="app-player-controls__search-buttons">
+                        <a
+                            className="app-button app-button--blue shadow app-player-controls__button app-player-controls__button--search"
+                            href="https://vk.com"
+                            onClick={this.handleNextClick}>
+                            VK
+                        </a>
 
-                    <a
-                        className="app-button app-button--blue shadow app-player-controls__button app-player-controls__button--search"
-                        href="https://music.yandex.ru"
-                        onClick={this.handleNextClick}>Search on Yandex
-                    </a>
+                        <a
+                            className="app-button app-button--blue shadow app-player-controls__button app-player-controls__button--search"
+                            href="https://music.yandex.ru"
+                            onClick={this.handleNextClick}>
+                            Yandex
+                        </a>
+                    </div>
                 </div>
             </div>
         )
