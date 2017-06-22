@@ -45,20 +45,19 @@ export default class ChannelContent extends React.PureComponent {
             this.setTrack(null);
             return;
         }
-
-        const playingQueue = this.props.playingQueue;
-        playingQueue.setOnChangeHandler(() => {
-            this.props.favoritesStore.trackWasStarted(this.props.channelId);
-            const track = playingQueue.getNextTrack();
-            this.setTrack(track);
-        });
-
-        playingQueue.setOnLoadErrorHandler(() => {
-            this.setError();
-        });
-
-        playingQueue.loadTracks(channelId);
         this.props.favoritesStore.channelWasOpened(channelId);
+        this.loadNextTrack();
+    }
+
+    loadNextTrack() {
+        this.props.tracksLoader.loadTracks(this.props.channelId)
+            .then(track => {
+                this.props.favoritesStore.trackWasStarted(this.props.channelId);
+                this.setTrack(track);
+            })
+            .catch(() => {
+                this.setError();
+            })
     }
 
     setTrack(track) {
@@ -97,8 +96,9 @@ export default class ChannelContent extends React.PureComponent {
     }
 
     handleNextClick() {
-        this.setState({ error: false });
-        this.props.playingQueue.loadTracks(this.props.channelId);
+        this.setState({ error: false }, () => {
+            this.loadNextTrack();
+        });
     }
 
     handlePlayerStateChange(e) {
@@ -138,7 +138,7 @@ export default class ChannelContent extends React.PureComponent {
                 : currentTime + maxTrackDuration;
 
             this.autoChangeTrackTimeoutId = setTimeout(() => {
-                this.props.playingQueue.loadTracks(this.props.channelId);
+                this.loadNextTrack();
             }, (endTime - currentTime) * 1000);
         }
 
@@ -239,6 +239,6 @@ export default class ChannelContent extends React.PureComponent {
 
 ChannelContent.propTypes = {
     channelId: PropTypes.string,
-    playingQueue: PropTypes.object.isRequired,
+    tracksLoader: PropTypes.object.isRequired,
     favoritesStore: PropTypes.object.isRequired,
 };

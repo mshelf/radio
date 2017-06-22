@@ -10,7 +10,6 @@ import ChannelContent from "./components/channel-content";
 import channels from "./data/channels";
 import ChannelsRegistry from "./services/channels-registry";
 import TracksLoader from "./services/tracks-loader";
-import PlayingQueue from "./services/playing-queue";
 import FavoritesStore from "./services/favorites-store";
 
 window.initApp = function () {
@@ -45,8 +44,7 @@ class RadioApp extends React.Component {
         this.channelsRegistry = new ChannelsRegistry(channels);
         this.favoritesStore = new FavoritesStore(this.channelsRegistry);
 
-        const trackLoader = new TracksLoader(this.channelsRegistry);
-        this.playingQueue = new PlayingQueue(trackLoader);
+        this.tracksLoader = new TracksLoader(this.channelsRegistry);
     }
 
     handleToggleMenu(e) {
@@ -79,7 +77,7 @@ class RadioApp extends React.Component {
                 <ChannelContent
                     channelId={channelId}
                     favoritesStore={this.favoritesStore}
-                    playingQueue={this.playingQueue}
+                    tracksLoader={this.tracksLoader}
                 />
             </div>
         )
