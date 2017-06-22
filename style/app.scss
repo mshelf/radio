@@ -9,6 +9,11 @@ body {
   background-size: cover;
 }
 
+@media (max-width: $max-width-without-menu) {
+  background-size: auto;
+}
+
+
 .shadow {
   box-shadow: 1px 0px 5px 0px $dark-bg-color;
 }
