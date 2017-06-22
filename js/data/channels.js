@@ -243,7 +243,7 @@ export default [
                 maxTrackDuration: 3600,
                 children: [
                     {
-                        title: "Classic Jazz",
+                        title: "Swing Jazz",
                         maxTrackDuration: 3600,
                     },
                     {
