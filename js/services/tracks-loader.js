@@ -1,7 +1,7 @@
 import ArtistsApiClient from "./artists-api-client";
 import YoutubeApiClient from "./youtube-api-client";
 import { parseTracklistTimes } from "./tracklist-parser";
-import { randomArrayItem, randomInt, randomIntFromInterval, log } from "./utils";
+import { randomArrayItem, randomInt, randomIntFromInterval, debugLog } from "./utils";
 
 export default class TracksLoader {
     constructor(channelsRegistry) {
@@ -41,7 +41,7 @@ export default class TracksLoader {
     }
 
     _getSearchResult(query, sourceData) {
-        log(query);
+        debugLog(query);
         const filterForTitle = sourceData.artist ? sourceData.artist : null;
         return this.youtubeApiClient.search(query, filterForTitle)
             // choose video from result set
@@ -51,7 +51,7 @@ export default class TracksLoader {
             // add info about channel and artist to video info
             .then(data => {
                 if (data === null) {
-                    log("cannot load info");
+                    debugLog("cannot load info");
                     return { sourceData };
                 }
                 data.tracklist = data.description ? parseTracklistTimes(data.description) : [];
@@ -64,18 +64,18 @@ export default class TracksLoader {
             const num = Math.floor(Math.random() * resultSet.items.length);
             const id = getIdFromItem(resultSet.items[num]);
             if (id.kind === "youtube#video") {
-                log(` - video ${id.videoId}`);
+                debugLog(` - video ${id.videoId}`);
                 return id.videoId;
                 //return "wzJWoLd-mzo"; // from-to timings and new lines
                 // return "EMrFJ2ze6qA";
             } else {
-                log(` - playlist ${id.playlistId}`);
+                debugLog(` - playlist ${id.playlistId}`);
                 return this.youtubeApiClient.getPlaylistItems(id.playlistId).then(
                     resultSetInner => this._getRandomVideoIdFromResultSet(resultSetInner, item => item.snippet.resourceId)
                 );
             }
         } else {
-            log("!!! empty list");
+            debugLog("!!! empty list");
             return null;
         }
     }

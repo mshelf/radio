@@ -2,8 +2,8 @@ import React from "react";
 import PropTypes from "prop-types";
 import YouTube from "react-youtube";
 import { getNearestTime, getTrackByTime } from "../services/tracklist-parser";
-import { randomIntFromInterval, log } from "../services/utils";
-import { REGEX_REMOVE_EMOJI } from "../services/tracklist-parser";
+import { randomIntFromInterval, debugLog } from "../services/utils";
+import { REMOVE_EMOJI_REGEX } from "../services/tracklist-parser";
 
 const YOUTUBE_PLAYER_OPTS = {
     playerVars: {
@@ -19,6 +19,7 @@ export default class ChannelContent extends React.PureComponent {
         this.state = {
             track: null,
             trackName: null,
+            error: false,
         };
         this.handleNextClick = this.handleNextClick.bind(this);
         this.handlePlayerStateChange = this.handlePlayerStateChange.bind(this);
@@ -47,10 +48,14 @@ export default class ChannelContent extends React.PureComponent {
         }
 
         const playingQueue = this.props.playingQueue;
-        this.props.playingQueue.setOnChangeHandler(() => {
+        playingQueue.setOnChangeHandler(() => {
             this.props.favoritesStore.trackWasStarted(this.props.channelId);
             const track = playingQueue.getNextTrack();
             this.setTrack(track);
+        });
+
+        playingQueue.setOnLoadErrorHandler(() => {
+            this.setError();
         });
 
         playingQueue.loadTracks(channelId);
@@ -60,9 +65,17 @@ export default class ChannelContent extends React.PureComponent {
     setTrack(track) {
         this.isStarted = false;
         const trackName = track.title
-            .replace(REGEX_REMOVE_EMOJI, "")
+            .replace(REMOVE_EMOJI_REGEX, "")
             .replace(REGEX_REMOVE_TITLE_POSTFIX, "").trim();
-        this.setState({ track, trackName: trackName });
+        this.setState({ track, trackName: trackName, error: false, });
+    }
+
+    setError() {
+        this.setState({
+            track: null,
+            trackName: null,
+            error: true,
+        });
     }
 
     checkCurrentTrack(player) {
@@ -70,17 +83,18 @@ export default class ChannelContent extends React.PureComponent {
         const time = player.getCurrentTime();
         const track = getTrackByTime(trackList, time);
         if (!track) {
-            log(`Warning! Cannot select track by time ${time}`);
-            log(trackList);
+            debugLog(`Warning! Cannot select track by time ${time}`);
+            debugLog(trackList);
             return;
         }
         if (track.title !== this.state.trackName) {
-            log(`Set new track name: ${track.title}`);
+            debugLog(`Set new track name: ${track.title}`);
             this.setState({ trackName: track.title });
         }
     }
 
     handleNextClick() {
+        this.setState({ error: false });
         this.props.playingQueue.loadTracks(this.props.channelId);
     }
 
@@ -107,7 +121,7 @@ export default class ChannelContent extends React.PureComponent {
                 const startTime = hasTrackList > 0
                     ? getNearestTime(track.tracklist, randomIntFromInterval(0, duration - maxTrackDuration))
                     : randomIntFromInterval(0, duration - maxTrackDuration);
-                log(`Start new long video since ${startTime}`);
+                debugLog(`Start new long video since ${startTime}`);
                 e.target.seekTo(startTime);
                 return;
             }
@@ -159,8 +173,24 @@ export default class ChannelContent extends React.PureComponent {
         return null;
     }
 
+    renderError() {
+        return (
+            <div className="app-error-message shadow">
+                <h2>Error</h2>
+                <p>Unfortunately, we cannot load the track.</p>
+                <p>
+                    <button onClick={this.handleNextClick} className="app-button app-button--blue shadow">Try again</button>
+                </p>
+            </div>
+        )
+    }
+
     renderPlayer() {
-        const { track, isStarted, trackName } = this.state;
+        const { track, trackName, error } = this.state;
+        if (error) {
+            return this.renderError();
+        }
+
         if (!track) {
             return null;
         }

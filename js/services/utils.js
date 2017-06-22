@@ -10,7 +10,7 @@ export function randomArrayItem(items) {
     return items[randomInt(items.length)];
 }
 
-export function log(msg) {
+export function debugLog(msg) {
     if (process.env.NODE_ENV !== "production") {
         console.log(msg);
     }

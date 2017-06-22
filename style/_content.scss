@@ -43,7 +43,6 @@
   .app-current-track-name {
     font-size: 16px;
     color: white;
-    font-weight: bold;
     width: 100%;
     background-color: $dark-bg-color;
     padding: 8px;
@@ -51,6 +50,12 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
+  }
+
+  .app-error-message {
+    padding: 5px 20px;
+    color: #fff;
+    background-color: $error-color;
   }
 }
 
