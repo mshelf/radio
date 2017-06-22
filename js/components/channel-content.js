@@ -1,9 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 import YouTube from "react-youtube";
-import { getNearestTime, getTrackByTime } from "../services/tracklist-parser";
 import { randomIntFromInterval, debugLog } from "../services/utils";
-import { REMOVE_EMOJI_REGEX } from "../services/tracklist-parser";
+import { REMOVE_EMOJI_REGEX } from "../services/parsed-track-list";
 
 const YOUTUBE_PLAYER_OPTS = {
     playerVars: {
@@ -81,10 +80,10 @@ export default class ChannelContent extends React.PureComponent {
     checkCurrentTrack(player) {
         const trackList = this.state.track.tracklist;
         const time = player.getCurrentTime();
-        const track = getTrackByTime(trackList, time);
+        const track = trackList.getTrackByTime(time);
         if (!track) {
             debugLog(`Warning! Cannot select track by time ${time}`);
-            debugLog(trackList);
+            debugLog(trackList.tracks);
             return;
         }
         if (track.title !== this.state.trackName) {
@@ -111,15 +110,15 @@ export default class ChannelContent extends React.PureComponent {
         const channel = track.sourceData.channel;
         const maxTrackDuration = channel.maxTrackDuration ? channel.maxTrackDuration : 1000;
         const isLong = duration > maxTrackDuration;
-        const hasTrackList = track.tracklist.length > 0;
+        const hasTrackList = track.tracklist.hasTracks();
 
         // start new video
         if (!this.isStarted) {
             this.isStarted = true;
             // start long track from random position
             if (isLong) {
-                const startTime = hasTrackList > 0
-                    ? getNearestTime(track.tracklist, randomIntFromInterval(0, duration - maxTrackDuration))
+                const startTime = hasTrackList
+                    ? track.tracklist.getNearestStartTrackTime(randomIntFromInterval(0, duration - maxTrackDuration))
                     : randomIntFromInterval(0, duration - maxTrackDuration);
                 debugLog(`Start new long video since ${startTime}`);
                 e.target.seekTo(startTime);
@@ -131,7 +130,7 @@ export default class ChannelContent extends React.PureComponent {
         if (isLong) {
             const currentTime = Math.floor(e.target.getCurrentTime());
             const endTime = hasTrackList > 0
-                ? getNearestTime(track.tracklist, currentTime + maxTrackDuration)
+                ? track.tracklist.getNearestStartTrackTime(currentTime + maxTrackDuration)
                 : currentTime + maxTrackDuration;
 
             this.autoChangeTrackTimeoutId = setTimeout(() => {

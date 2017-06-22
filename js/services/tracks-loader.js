@@ -1,6 +1,6 @@
 import ArtistsApiClient from "./artists-api-client";
 import YoutubeApiClient from "./youtube-api-client";
-import { parseTracklistTimes } from "./tracklist-parser";
+import ParsedTrackList from "./parsed-track-list";
 import { randomArrayItem, randomInt, randomIntFromInterval, debugLog } from "./utils";
 
 export default class TracksLoader {
@@ -54,7 +54,7 @@ export default class TracksLoader {
                     debugLog("cannot load info");
                     return { sourceData };
                 }
-                data.tracklist = data.description ? parseTracklistTimes(data.description) : [];
+                data.tracklist = new ParsedTrackList(data.description, sourceData);
                 return Object.assign(data, { sourceData });
             });
     }

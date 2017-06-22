@@ -13,7 +13,6 @@ import TracksLoader from "./services/tracks-loader";
 import PlayingQueue from "./services/playing-queue";
 import FavoritesStore from "./services/favorites-store";
 
-
 window.initApp = function () {
     if (document.readyState !== "loading") {
         renderApp();
@@ -86,7 +85,3 @@ class RadioApp extends React.Component {
         )
     }
 }
-
-RadioApp.contextTypes = {
-    router: React.PropTypes.object.isRequired,
-};
