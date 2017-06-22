@@ -5,11 +5,7 @@ export default [
         children: [
             {
                 title: "Pop",
-                keywords: [
-                    { query: ["pop music", "поп музыка"], yearPostfix: 1990 },
-                    "европа плюс музыка",
-                    "русское радио музыка"
-                ]
+                keywords: { query: ["pop music", "поп музыка"], yearPostfix: 1990 },
             },
             {
                 title: "Rock",
@@ -243,11 +239,11 @@ export default [
                 maxTrackDuration: 3600,
                 children: [
                     {
-                        title: "Swing Jazz",
-                        maxTrackDuration: 3600,
-                    },
-                    {
-                        title: "Bebop Jazz",
+                        title: "Traditional Jazz",
+                        keywords: {
+                            query: ["Traditional jazz", "bebop jazz", "classic jazz"]
+                        },
+                        useKeywordsFactor: 3,
                         maxTrackDuration: 3600,
                     },
                     {
