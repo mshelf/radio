@@ -1,5 +1,5 @@
 export const TIMING_REGEX = /(.*?)((\d+):)?(\d{1,2}):(\d{2})(.*)/;
-export const TRACK_NUMBER_REGEX = /^\s*\d+(\)|\.|:|(\s*-))+\s*/;
+export const TRACK_NUMBER_REGEX = /^\s*\d+(\)|\.|:|(\s*-)|(\s*\|))+\s*/;
 export const EMOJI_REGEX = /[\uE000-\uF8FF]/g;
 export const EMPTY_BRACES_REGEX = /(\[\s*\])|(\(\s*\))/g;
 export const LETTERS_REGEX = /[а-яА-ЯёЁa-zA-Z]+/;
