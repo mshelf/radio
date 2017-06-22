@@ -1,6 +1,22 @@
 npm run build
 
+if [ "$1" = "--reload-artists" ]
+then
+    cd ../grabber
+    if npm run all
+    then
+        rm ../radio/data/artists/*
+        cp data/dist/* ../radio/data/artists
+        cd ../radio
+        git add -A && git commit -m "update artists lists"
+        git push origin master
+    else
+        echo "Error in grabber!!! Artists lists will not be updated."
+    fi
+fi
+
 cd ../mshelf.github.io
+git pull origin master
 rm index.html
 rm favicon.ico
 rm -rf dist/*
