@@ -62,11 +62,15 @@ export default class ChannelContent extends React.PureComponent {
     }
 
     setTrack(track) {
+        debugLog("Set track");
+        debugLog(track);
         this.isStarted = false;
-        const trackName = track.title
-            .replace(REMOVE_EMOJI_REGEX, "")
-            .replace(REGEX_REMOVE_TITLE_POSTFIX, "").trim();
-        this.setState({ track, trackName: trackName, error: false, });
+        const trackName = track
+            ? track.title
+                .replace(REMOVE_EMOJI_REGEX, "")
+                .replace(REGEX_REMOVE_TITLE_POSTFIX, "").trim()
+            : null;
+        this.setState({ track, trackName, error: false });
     }
 
     setError() {

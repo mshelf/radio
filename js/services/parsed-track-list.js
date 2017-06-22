@@ -7,6 +7,7 @@ const LETTERS_REGEX = /[а-яА-ЯёЁa-zA-Z]+/;
 export default class ParsedTrackList {
     constructor(description, sourceData) {
         const tracks = [];
+        const artist = sourceData.artist ? sourceData.artist.toLowerCase() : null;
         if (description) {
             const lines = description.split("\n");
             for (var i = 0; i < lines.length; i++) {
@@ -21,15 +22,20 @@ export default class ParsedTrackList {
                     + parseInt(matches[4], 10) * 60
                     + parseInt(matches[5], 10);
 
-                const title = `${preText} ${postText}`;
+                let title = `${preText} ${postText}`;
                 if (matches && LETTERS_REGEX.test(title)) {
+                    title = title
+                        .replace(REMOVE_EMTY_BRACES_REGEX, "")
+                        .replace(REMOVE_EMOJI_REGEX, "")
+                        .replace(REMOVE_NUMBER_REGEX, "")
+                        .trim();
+                    if (sourceData.artist && title.toLowerCase().indexOf(artist) === -1) {
+                        title = `${sourceData.artist} - ${title}`;
+                    }
+
                     tracks.push({
                         time,
-                        title: title
-                            .replace(REMOVE_EMTY_BRACES_REGEX, "")
-                            .replace(REMOVE_EMOJI_REGEX, "")
-                            .replace(REMOVE_NUMBER_REGEX, "")
-                            .trim(),
+                        title,
                     });
                 }
             }
