@@ -1,8 +1,10 @@
-const TIMING_REGEX = /(.*?)((\d+):)?(\d{1,2}):(\d{2})(.*)/;
-const REMOVE_NUMBER_REGEX = /^\s*\d+(\)|\.|:|(\s*-))+\s*/;
-export const REMOVE_EMOJI_REGEX = /[\uE000-\uF8FF]/g;
-const REMOVE_EMTY_BRACES_REGEX = /\[\s*\]/g;
-const LETTERS_REGEX = /[а-яА-ЯёЁa-zA-Z]+/;
+import {
+    LETTERS_REGEX,
+    EMOJI_REGEX,
+    EMPTY_BRACES_REGEX,
+    TRACK_NUMBER_REGEX,
+    TIMING_REGEX,
+} from "./utils";
 
 export default class ParsedTrackList {
     constructor(description, sourceData) {
@@ -25,9 +27,9 @@ export default class ParsedTrackList {
                 let title = `${preText} ${postText}`;
                 if (matches && LETTERS_REGEX.test(title)) {
                     title = title
-                        .replace(REMOVE_EMTY_BRACES_REGEX, "")
-                        .replace(REMOVE_EMOJI_REGEX, "")
-                        .replace(REMOVE_NUMBER_REGEX, "")
+                        .replace(EMPTY_BRACES_REGEX, "")
+                        .replace(EMOJI_REGEX, "")
+                        .replace(TRACK_NUMBER_REGEX, "")
                         .trim();
                     if (sourceData.artist && title.toLowerCase().indexOf(artist) === -1) {
                         title = `${sourceData.artist} - ${title}`;

@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import YouTube from "react-youtube";
 import { randomIntFromInterval, debugLog } from "../services/utils";
-import { REMOVE_EMOJI_REGEX } from "../services/parsed-track-list";
+import { EMOJI_REGEX } from "../services/utils";
 
 const YOUTUBE_PLAYER_OPTS = {
     playerVars: {
@@ -67,7 +67,7 @@ export default class ChannelContent extends React.PureComponent {
         this.isStarted = false;
         const trackName = track
             ? track.title
-                .replace(REMOVE_EMOJI_REGEX, "")
+                .replace(EMOJI_REGEX, "")
                 .replace(REGEX_REMOVE_TITLE_POSTFIX, "").trim()
             : null;
         this.setState({ track, trackName, error: false });
