@@ -49,15 +49,18 @@ export default class ChannelContent extends React.PureComponent {
         this.loadNextTrack();
     }
 
-    loadNextTrack() {
-        this.props.tracksLoader.loadTracks(this.props.channelId)
+    loadNextTrack(channelId) {
+        if (!channelId) {
+            channelId = this.props.channelId;
+        }
+        this.props.tracksLoader.loadTracks(channelId)
             .then(track => {
-                this.props.favoritesStore.trackWasStarted(this.props.channelId);
+                this.props.favoritesStore.trackWasStarted(channelId);
                 this.setTrack(track);
             })
             .catch(() => {
                 this.setError();
-            })
+            });
     }
 
     setTrack(track) {
