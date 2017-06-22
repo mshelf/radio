@@ -291,7 +291,7 @@ export default [
                     },
                 ].sort(comparator)
             }
-        ]
+        ].sort(comparator)
     }
 ].sort(comparator);
 
