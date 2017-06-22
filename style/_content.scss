@@ -13,6 +13,10 @@
     text-shadow: 1px 1px 5px $dark-bg-color;
   }
 
+  .app-player-container {
+    height: 360px;
+  }
+
   .app-youtube-player {
     width: 100%;
   }
@@ -44,7 +48,7 @@
     font-size: 16px;
     color: white;
     width: 100%;
-    background-color: $dark-bg-color;
+    background-color: #000;
     padding: 8px;
     box-sizing: border-box;
     text-overflow: ellipsis;

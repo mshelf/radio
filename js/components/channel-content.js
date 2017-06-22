@@ -206,7 +206,7 @@ export default class ChannelContent extends React.PureComponent {
                         onStateChange={this.handlePlayerStateChange}
                     />
                 </div>
-                <div className="app-current-track-name shadow">
+                <div className="app-current-track-name">
                     {trackName}
                 </div>
                 <div className="app-player-controls">
