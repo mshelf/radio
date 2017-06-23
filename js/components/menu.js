@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { concatChannelIds } from "../services/utils";
 
 export default class Menu extends React.PureComponent {
     constructor() {
@@ -74,14 +75,10 @@ export default class Menu extends React.PureComponent {
         var pathItem = "";
         const expandedPath = {};
         for (var i = 0; i < parts.length; i++) {
-            pathItem = this.concatParentIdAndId(pathItem, parts[i]);
+            pathItem = concatChannelIds(pathItem, parts[i]);
             expandedPath[pathItem] = true;
         }
         return expandedPath;
-    }
-
-    concatParentIdAndId(parentId, id) {
-        return parentId ? `${parentId}\\${id}` : id;
     }
 
     renderChannel(channelId, title, path, isSelected) {
@@ -119,7 +116,7 @@ export default class Menu extends React.PureComponent {
         const expandedPath = this.state.expandedPath;
         for (var key in channels) {
             const item = channels[key];
-            const path = this.concatParentIdAndId(parentId, item.title);
+            const path = concatChannelIds(parentId, item.title);
             if (!item.children) {
                 const channelId = item.id;
                 result.push(this.renderChannel(channelId, item.title, path, channelId === this.props.channelId));

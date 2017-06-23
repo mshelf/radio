@@ -1,3 +1,5 @@
+import { concatChannelIds } from "./utils";
+
 export default class ChannelsRegistry {
     constructor(channels) {
         this.registry = {};
@@ -12,7 +14,7 @@ export default class ChannelsRegistry {
 
 function addBranchToRegistry(dataBranch, registry, tree, parentId) {
     dataBranch.forEach(item => {
-        const id = concatParentIdAndId(parentId, item.title);
+        const id = concatChannelIds(parentId, item.title);
         item.id = id;
 
         if (!item.isJustContainer) {
@@ -26,10 +28,6 @@ function addBranchToRegistry(dataBranch, registry, tree, parentId) {
     });
 }
 
-function concatParentIdAndId(parentId, id) {
-    return parentId ? `${parentId}\\${id}` : id;
-}
-
 function makeChannelDescriptor(id, channelData) {
     const descriptor = Object.assign({ id }, channelData);
     if (!channelData.isFolder && channelData.children) {
@@ -41,7 +39,7 @@ function makeChannelDescriptor(id, channelData) {
 function getAllChildrenIdsAsFlatArray(parentId, children) {
     const ids = [];
     children.forEach(child => {
-        const childId = concatParentIdAndId(parentId, child.title);
+        const childId = concatChannelIds(parentId, child.title);
         putAllChildrenIdsToArray(childId, child, ids);
     });
     return ids;
@@ -51,7 +49,7 @@ function putAllChildrenIdsToArray(id, item, result) {
     result.push(id);
     if (item.children) {
         item.children.forEach(child => {
-            const childId = concatParentIdAndId(id, child.title);
+            const childId = concatChannelIds(id, child.title);
             putAllChildrenIdsToArray(childId, child, result)
         });
     }

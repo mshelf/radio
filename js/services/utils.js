@@ -21,3 +21,7 @@ export function debugLog(msg) {
         console.log(msg);
     }
 }
+
+export function concatChannelIds(parentId, id) {
+    return parentId ? `${parentId}\\${id}` : id;
+}

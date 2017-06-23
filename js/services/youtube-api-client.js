@@ -18,7 +18,7 @@ export default class YoutubeApiClient {
         const url = `${URL_BASE}/search?part=snippet&key=${API_KEY}&type=video,playlist&maxResults=50&q=${encodeURIComponent(query)}&fields=items(id,snippet/title)`;
         const resultPromise = axios.get(url).then(r => r.data);
         if (filterForTitle) {
-            return resultPromise.then(resultSet => filterResultSetByTitle(resultSet, filterForTitle));
+            return resultPromise.then(resultSet => filterStartsWith(resultSet, filterForTitle));
         } else {
             return resultPromise;
         }
@@ -36,7 +36,7 @@ export default class YoutubeApiClient {
     }
 }
 
-function filterResultSetByTitle(resultSet, filterForTitle) {
+function filterStartsWith(resultSet, filterForTitle) {
     filterForTitle = slug(filterForTitle);
     return {
         items: resultSet.items.filter(item => slug(item.snippet.title).startsWith(filterForTitle))

@@ -7,14 +7,12 @@ export default class FavoritesStore {
     }
 
     channelWasOpened(channelId) {
-        const data = this._getData();
-        plusPoints(data, channelId, 5);
+        const data = this._plusPointsAndGetData(channelId, 5);
         this._saveData(data);
     }
 
     trackWasStarted(channelId) {
-        const data = this._getData();
-        plusPoints(data, channelId, 1);
+        const data = this._plusPointsAndGetData(channelId, 1);
         this._saveData(data);
     }
 
@@ -48,6 +46,23 @@ export default class FavoritesStore {
         this.isCacheValid = false;
         localStorage.setItem(KEY, JSON.stringify(data));
     }
+
+    _plusPointsAndGetData(channelId, points) {
+        const data = this._getData();
+        if (typeof data[channelId] === "undefined") {
+            data[channelId] = 0;
+        }
+
+        data[channelId] += points;
+
+        if (data[channelId] >= 300) {
+            for (var key in data) {
+                data[key] = Math.floor(data[key] / 2);
+            }
+        }
+
+        return data;
+    }
 }
 
 function comparator(a, b) {
@@ -58,11 +73,4 @@ function comparator(a, b) {
         return -1;
     }
     return 0;
-}
-
-function plusPoints(data, channelId, points) {
-    if (typeof data[channelId] === "undefined") {
-        data[channelId] = 0;
-    }
-    data[channelId] += points;
 }
