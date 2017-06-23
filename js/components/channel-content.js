@@ -159,16 +159,16 @@ export default class ChannelContent extends React.PureComponent {
     renderSearchButtons(queryForSearch) {
         if (queryForSearch) {
             return (
-                <div className="app-player-controls__search-buttons">
+                <div className="app-track-info__search-buttons">
                     <a
-                        className="app-button app-button--blue shadow app-player-controls__button app-player-controls__button--search"
+                        className="app-button app-button--blue app-track-info__search-button"
                         href={`https://vk.com/search?c%5Bq%5D=${queryForSearch}&c%5Bsection%5D=audio`}
                         target="_blank">
                         VK
                     </a>
 
                     <a
-                        className="app-button app-button--blue shadow app-player-controls__button app-player-controls__button--search"
+                        className="app-button app-button--blue app-track-info__search-button"
                         href={`https://music.yandex.ru/search?text=${queryForSearch}`}
                         target="_blank">
                         Yandex
@@ -212,15 +212,15 @@ export default class ChannelContent extends React.PureComponent {
                         onStateChange={this.handlePlayerStateChange}
                     />
                 </div>
-                <div className="app-current-track-name">
-                    {trackName}
+                <div className="app-track-info">
+                    <span className="app-track-info__name">{trackName}</span>
+                    {this.renderSearchButtons(trackName)}
                 </div>
                 <div className="app-player-controls">
                     <button
                         className="app-button shadow app-player-controls__button"
                         onClick={this.handleNextClick}>Next Track >>
                     </button>
-                    {this.renderSearchButtons(trackName)}
                 </div>
             </div>
         )
