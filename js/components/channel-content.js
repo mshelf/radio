@@ -184,7 +184,7 @@ export default class ChannelContent extends React.PureComponent {
 
     renderError() {
         return (
-            <div className="app-error-message">
+            <div className="app-content__error-message">
                 <h2>Error</h2>
                 <p>Unfortunately, we cannot load the track.</p>
                 <p>
