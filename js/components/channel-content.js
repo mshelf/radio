@@ -156,36 +156,39 @@ export default class ChannelContent extends React.PureComponent {
         return channelId.replace(/\\/g, " / ");
     }
 
-    renderSearchButtons(queryForSearch) {
-        if (queryForSearch) {
-            return (
-                <div className="app-track-info__search-buttons">
+    renderTrackBar(trackName) {
+        return (
+            <div className="app-track">
+                <span className="app-track__name">{trackName}</span>
+                <div className="app-track__buttons">
+                    <button
+                        className="app-button app-track__button app-track__button--next"
+                        onClick={this.handleNextClick}>Next Track >>
+                    </button>
                     <a
-                        className="app-button app-button--blue app-track-info__search-button"
-                        href={`https://vk.com/search?c%5Bq%5D=${queryForSearch}&c%5Bsection%5D=audio`}
+                        className="app-button app-button--blue app-track__button--search"
+                        href={`https://vk.com/search?c%5Bq%5D=${trackName}&c%5Bsection%5D=audio`}
                         target="_blank">
                         VK
                     </a>
-
                     <a
-                        className="app-button app-button--blue app-track-info__search-button"
-                        href={`https://music.yandex.ru/search?text=${queryForSearch}`}
+                        className="app-button app-button--blue app-track__button--search"
+                        href={`https://music.yandex.ru/search?text=${trackName}`}
                         target="_blank">
                         Yandex
                     </a>
                 </div>
-            )
-        }
-        return null;
+            </div>
+        )
     }
 
     renderError() {
         return (
-            <div className="app-error-message shadow">
+            <div className="app-error-message">
                 <h2>Error</h2>
                 <p>Unfortunately, we cannot load the track.</p>
                 <p>
-                    <button onClick={this.handleNextClick} className="app-button app-button--blue shadow">Try again</button>
+                    <button onClick={this.handleNextClick} className="app-button app-button--blue">Try again</button>
                 </p>
             </div>
         )
@@ -203,25 +206,16 @@ export default class ChannelContent extends React.PureComponent {
 
         return (
             <div>
-                <div className="app-player-container">
+                <div className="app-content__player-container">
                     <YouTube
                         opts={YOUTUBE_PLAYER_OPTS}
-                        className="app-youtube-player"
+                        className="app-content__youtube-player"
                         videoId={track.id}
                         onEnd={this.handleNextClick}
                         onStateChange={this.handlePlayerStateChange}
                     />
                 </div>
-                <div className="app-track-info">
-                    <span className="app-track-info__name">{trackName}</span>
-                    {this.renderSearchButtons(trackName)}
-                </div>
-                <div className="app-player-controls">
-                    <button
-                        className="app-button shadow app-player-controls__button"
-                        onClick={this.handleNextClick}>Next Track >>
-                    </button>
-                </div>
+                {this.renderTrackBar(trackName)}
             </div>
         )
     }
@@ -233,7 +227,7 @@ export default class ChannelContent extends React.PureComponent {
         }
         return (
             <div className="app-content">
-                <h1 className="app-content-header">{this.getChannelNameById(channelId)}</h1>
+                <h1 className="app-content__header">{this.getChannelNameById(channelId)}</h1>
                 {this.renderPlayer()}
             </div>
         )

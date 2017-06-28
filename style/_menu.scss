@@ -1,4 +1,4 @@
-@import "variables";
+@import "common";
 
 .app-menu {
   background-color: $dark-bg-color;
@@ -11,65 +11,62 @@
   font-size: 16px;
   overflow: auto;
   user-select: none;
+  padding-left: 20px;
 
-  ul {
+  @include box-shadow();
+
+  &__submenu {
     margin: 0;
     padding-left: 13px;
     padding-top: 10px;
     list-style: none;
+    display: none;
 
-    &.root {
-      padding-left: 0;
-      padding-top: 10px;
-      > li {
-        padding-left: 20px;
+    &--root {
+      padding-left: 0px;
+    }
+
+    &.expanded {
+      display: block;
+    }
+  }
+
+  &__item {
+    padding: 10px 0 10px 0;
+    cursor: pointer;
+
+    &:not(.expanded):hover {
+      background-color: #35383d;
+    }
+
+    &:before {
+      content: "";
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      margin: 0 7px;
+      box-sizing: border-box;
+    }
+
+    &.folder {
+      &:before {
+        background: url("../img/folders.svg") -16px 0;
+      }
+
+      &.expanded {
+        &:before {
+          background: url("../img/folders.svg") -32px 0;
+        }
       }
     }
 
-    li {
-      padding: 10px 0 10px 0;
-      cursor: pointer;
-
-      &:not(.expanded):hover {
-        background-color: #35383d;
+    &.channel {
+      &.expanded {
+        color: $red-bg-color;
       }
 
       &:before {
-        content: "";
-        display: inline-block;
-        width: 16px;
-        height: 16px;
-        margin: 0 7px;
-        box-sizing: border-box;
-      }
-
-      &.folder {
-        &:before {
-          background: url("../img/folders.svg") -16px 0;
-        }
-
-        &.expanded {
-          &:before {
-            background-position: -32px 0;
-          }
-        }
-      }
-
-      &.channel {
-        &.expanded {
-          color: $red-bg-color;
-        }
-
-        &:before {
-          background: url("../img/headphones.svg");
-        }
-      }
-    }
-
-    &.submenu {
-      display: none;
-      &.expanded {
-        display: block;
+        background: url("../img/headphones.svg");
       }
     }
   }

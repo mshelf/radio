@@ -1,4 +1,4 @@
-@import "variables";
+@import "common";
 
 .app-button {
   padding: 15px 20px 15px 20px;
@@ -10,6 +10,8 @@
   text-decoration: none;
   display: inline-block;
   box-sizing: border-box;
+
+  @include box-shadow();
 
   &:hover {
     opacity: 0.9;

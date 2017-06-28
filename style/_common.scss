@@ -7,3 +7,11 @@ $content-padding: 10px;
 $red-bg-color: #e0360e;
 $blue-bg-color: #376a9d;
 $error-color: #ff7150;
+
+@mixin box-shadow {
+  box-shadow: 1px 0px 5px 0px $dark-bg-color;
+}
+
+@mixin text-shadow {
+  text-shadow: 1px 1px 5px $dark-bg-color;
+}

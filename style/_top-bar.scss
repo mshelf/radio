@@ -1,4 +1,4 @@
-@import "variables";
+@import "common";
 
 $toggle-button-size: 32px;
 $logo-size: 40px;
@@ -7,30 +7,33 @@ $logo-size: 40px;
   background-color: #000;
   position: fixed;
   width: 100%;
+  min-width: 350px;
   height: $top-bar-height;
   z-index: 100;
 
-  .app-menu-toggle-button {
+  @include box-shadow();
+
+  &__menu-toggle {
     display: none;
   }
 
-  .app-header {
+  &__header {
     margin-top: ($top-bar-height - $logo-size) / 2;
     margin-left: 20px;
+  }
 
-    .app-logo {
-      width: $logo-size;
-      height: $logo-size;
-      background-image: url("../img/logo.svg");
-      float: left;
-      margin-right: 10px;
-    }
+  &__logo {
+    width: $logo-size;
+    height: $logo-size;
+    background-image: url("../img/logo.svg");
+    float: left;
+    margin-right: 10px;
+  }
 
-    .app-header-text {
-      color: $red-bg-color;
-      font-size: 24px;
-      padding-top: ($logo-size - 24px) / 2;
-    }
+  &__header-text {
+    color: $red-bg-color;
+    font-size: 24px;
+    padding-top: ($logo-size - 24px) / 2;
   }
 }
 
@@ -38,7 +41,7 @@ $logo-size: 40px;
   .app-top-bar {
     text-align: center;
 
-    .app-menu-toggle-button {
+    &__menu-toggle {
       display: block;
       box-sizing: border-box;
       cursor: pointer;
@@ -57,7 +60,7 @@ $logo-size: 40px;
       }
     }
 
-    .app-header {
+    &__header {
       display: inline-block;
       width: 250px;
       margin-left: -$toggle-button-size;

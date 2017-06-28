@@ -87,7 +87,7 @@ export default class Menu extends React.PureComponent {
                 key={channelId}
                 data-channel-id={channelId}
                 data-path={path}
-                className={isSelected ? "channel expanded"  : "channel"}
+                className={isSelected ? "app-menu__item channel expanded"  : "app-menu__item channel"}
                 onClick={this.handleMenuItemClick}
             >
                 {title}
@@ -100,11 +100,11 @@ export default class Menu extends React.PureComponent {
             <li
                 key={path}
                 data-path={path}
-                className={isExpanded ? "folder expanded"  : "folder"}
+                className={isExpanded ? "app-menu__item folder expanded"  : "app-menu__item folder"}
                 onClick={this.handleMenuItemClick}
             >
                 {title}
-                <ul className={isExpanded ? "submenu expanded"  : "submenu"}>
+                <ul className={isExpanded ? "app-menu__submenu expanded"  : "app-menu__submenu"}>
                     {children}
                 </ul>
             </li>
@@ -134,7 +134,7 @@ export default class Menu extends React.PureComponent {
 
     render() {
         const channels = this.props.channelsRegistry.tree;
-        const className = this.props.isForceShow ? "app-menu shadow force-show" : "app-menu shadow";
+        const className = this.props.isForceShow ? "app-menu force-show" : "app-menu";
 
         const favoritesChannels = this.props.favoritesStore.getFavoritesChannels();
         const favoritesFolder = [{
@@ -145,7 +145,7 @@ export default class Menu extends React.PureComponent {
 
         return (
             <div className={className}>
-                <ul className="root">
+                <ul className="app-menu__submenu app-menu__submenu--root expanded">
                     {favoritesChannels.length > 0 ? this.renderBranch(favoritesFolder, "") : null}
                     {this.renderBranch(channels, "")}
                 </ul>
