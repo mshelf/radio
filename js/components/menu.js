@@ -114,8 +114,8 @@ export default class Menu extends React.PureComponent {
     renderBranch(channels, parentId) {
         const result = [];
         const expandedPath = this.state.expandedPath;
-        for (var key in channels) {
-            const item = channels[key];
+        for (var i = 0; i < channels.length; i++) {
+            const item = channels[i];
             const path = concatChannelIds(parentId, item.title);
             if (!item.children) {
                 const channelId = item.id;

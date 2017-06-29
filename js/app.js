@@ -12,7 +12,11 @@ import ChannelsRegistry from "./services/channels-registry";
 import TracksLoader from "./services/tracks-loader";
 import FavoritesStore from "./services/favorites-store";
 
+import applyPolyfills from "./polyfills";
+
 window.initApp = function () {
+    applyPolyfills();
+
     if (document.readyState !== "loading") {
         renderApp();
     } else {
