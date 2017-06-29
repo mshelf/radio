@@ -6,19 +6,23 @@
   "scripts": {
     "dev-server": "webpack-dev-server --progress --colors --env.dev",
     "build": "webpack --progress --colors --env.prod",
-    "build-dev": "webpack --progress --colors --env.dev"
+    "build-dev": "webpack --progress --colors --env.dev",
+    "test": "jest"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "babel-core": "^6.23.1",
+    "babel-jest": "^20.0.3",
     "babel-loader": "^7.1.0",
     "babel-preset-es2015-webpack": "^6.4.3",
     "babel-preset-react": "^6.23.0",
     "css-loader": "^0.28.4",
     "extract-text-webpack-plugin": "^2.0.0",
     "file-loader": "^0.11.2",
+    "jest": "^20.0.4",
     "node-sass": "^4.5.0",
+    "regenerator-runtime": "^0.10.5",
     "sass-loader": "^6.0.2",
     "webpack": "^3.0.0",
     "webpack-dev-server": "^2.4.1"

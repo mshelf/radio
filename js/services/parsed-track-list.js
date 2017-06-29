@@ -69,7 +69,7 @@ export default class ParsedTrackList {
                 return i > 0 ? this.tracks[i-1] : null;
             }
         }
-        return null;
+        return this.hasTracks() ? this.tracks[this.tracks.length - 1] : null;
     }
 
     hasTracks() {
