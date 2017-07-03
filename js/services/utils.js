@@ -25,3 +25,9 @@ export function debugLog(msg) {
 export function concatChannelIds(parentId, id) {
     return parentId ? `${parentId}\\${id}` : id;
 }
+
+export function trackEventForAnalytics(category, action, label) {
+    if (ga) {
+        ga("send", "event", category, action, label);
+    }
+}

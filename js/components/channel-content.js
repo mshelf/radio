@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import YouTube from "react-youtube";
 import { randomIntFromInterval, debugLog } from "../services/utils";
-import { EMOJI_REGEX } from "../services/utils";
+import { EMOJI_REGEX, trackEventForAnalytics } from "../services/utils";
 
 const YOUTUBE_PLAYER_OPTS = {
     playerVars: {
@@ -47,9 +47,7 @@ export default class ChannelContent extends React.PureComponent {
         }
         this.props.favoritesStore.channelWasOpened(channelId);
         this.loadNextTrack(channelId);
-        if (ga) {
-            ga("send", "event", "Channel", "play", channelId);
-        }
+        trackEventForAnalytics("Channel", "play", channelId);
     }
 
     loadNextTrack(channelId) {
@@ -59,6 +57,7 @@ export default class ChannelContent extends React.PureComponent {
         this.props.tracksLoader.loadTracks(channelId)
             .then(track => {
                 this.props.favoritesStore.trackWasStarted(channelId);
+                trackEventForAnalytics("Track", "play", channelId);
                 this.setTrack(track);
             })
             .catch(() => {
