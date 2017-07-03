@@ -37,6 +37,23 @@ $logo-size: 40px;
   }
 }
 
+.app-github {
+  fill: $red-bg-color;
+  color:#fff;
+  position: absolute;
+  top: 0;
+  border: 0;
+  right: 0;
+
+  &__arm {
+    transform-origin: 130px 106px;
+  }
+
+  &:hover {
+    opacity: 0.9;
+  }
+}
+
 @media (max-width: $max-width-without-menu) {
   .app-top-bar {
     text-align: center;
@@ -65,5 +82,11 @@ $logo-size: 40px;
       width: 250px;
       margin-left: -$toggle-button-size;
     }
+  }
+}
+
+@media (max-width: $smaller-width) {
+  .app-github {
+    display: none;
   }
 }
