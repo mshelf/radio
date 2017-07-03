@@ -1,5 +1,5 @@
 # Music Shelf Radio
 
-https://mshelf.hithub.io
+https://mshelf.github.io
 
 Serverless online radio app with music from youtube.
