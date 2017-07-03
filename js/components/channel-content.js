@@ -47,6 +47,9 @@ export default class ChannelContent extends React.PureComponent {
         }
         this.props.favoritesStore.channelWasOpened(channelId);
         this.loadNextTrack(channelId);
+        if (ga) {
+            ga("send", "event", "Channel", "play", channelId);
+        }
     }
 
     loadNextTrack(channelId) {
