@@ -97,6 +97,7 @@ export default class ChannelContent extends React.PureComponent {
         if (track.title !== this.state.trackName) {
             debugLog(`Set new track name: ${track.title}`);
             this.setState({ trackName: track.title });
+            trackEventForAnalytics("Track", "next subtrack", this.props.channelId);
         }
     }
 
