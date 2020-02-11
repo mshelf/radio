@@ -209,6 +209,7 @@ export default class ChannelContent extends React.PureComponent {
 
         return (
             <div>
+                {this.renderTrackBar(trackName)}
                 <div className="app-content__player-container">
                     <YouTube
                         opts={YOUTUBE_PLAYER_OPTS}
@@ -217,8 +218,7 @@ export default class ChannelContent extends React.PureComponent {
                         onEnd={this.handleNextClick}
                         onStateChange={this.handlePlayerStateChange}
                     />
-                </div>
-                {this.renderTrackBar(trackName)}
+                </div>                
             </div>
         )
     }
