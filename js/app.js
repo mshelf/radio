@@ -1,4 +1,3 @@
-import "../style/app.scss";
 import React from "react";
 import ReactDOM from "react-dom";
 import { HashRouter, Route, withRouter } from "react-router-dom";
