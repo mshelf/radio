@@ -164,18 +164,18 @@ export default class ChannelContent extends React.PureComponent {
             <div className="app-track">
                 <span className="app-track__name">{trackName}</span>
                 <div className="app-track__buttons">
-                    <button
+                    {/* <button
                         className="app-button app-track__button app-track__button--next"
                         onClick={this.handleNextClick}>Next Track >>
-                    </button>
+                    </button> */}
                     <a
-                        className="app-button app-button--blue app-track__button--search"
+                        className="app-button app-button--blue app-track__button app-track__button--search"
                         href={`https://vk.com/search?c%5Bq%5D=${trackName}&c%5Bsection%5D=audio`}
                         target="_blank">
                         VK
                     </a>
                     <a
-                        className="app-button app-button--blue app-track__button--search"
+                        className="app-button app-button--blue app-track__button app-track__button--search"
                         href={`https://music.yandex.ru/search?text=${trackName}`}
                         target="_blank">
                         Yandex

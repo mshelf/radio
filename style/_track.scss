@@ -26,11 +26,12 @@ $buttons-width: 320px;
   &__buttons {
     display: flex;
     justify-content: space-between;
-    width: $buttons-width;
+    // width: $buttons-width;
   }
 
   &__button {
     padding: 10px;
+    margin-left: 10px;
     &--search {
       padding: 10px 10px 10px 40px;
       background-image: url("../img/search.svg");
@@ -57,6 +58,7 @@ $buttons-width: 320px;
 
     &__button {
       margin-bottom: 10px;
+      margin-left: 0px;
 
       &--search {
         padding-left: 10px;
